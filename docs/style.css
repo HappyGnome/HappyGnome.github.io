@@ -1,0 +1,32 @@
+.rulebox{
+	color:#000000;
+	border: 2px solid black;
+	border-radius: 0px;	
+	width: 60vw;
+	
+}
+.rulebox h1{
+	font-size: 15pt;
+	margin: 10px;
+}
+.rulebox .subhead{
+	color:#444444;
+	margin: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	
+}
+.rulebox .rulehead {
+	display: flex;	
+	background-color:#eeeeee;
+	text-align: left;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.rulebox .rulebody {
+	text-align: left;
+}
+.rulebox .rulefooter{
+	text-align: right;
+}
