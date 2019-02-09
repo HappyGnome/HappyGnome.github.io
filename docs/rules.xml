@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<head>
+	<updated_by>no-one</updatedby>
+	<date>never</date>
+</head>
+<rules>
+	<rule id="0">
+		<label>000</label>
+		<date>never</date>
+		<text>TEXT</text>
+		<notes>NOTES</notes>
+		<ineffect>1</ineffect>
+		<!--links to other related rules using IDs-->
+		<linksto>1</linksto>		
+		<!--links to propositions using IDs-->
+		<proplink>1</proplink>
+	</rule>
+	<rule id="1">
+		<label>001</label>
+		<date>never</date>
+		<text>TEXT</text>
+		<notes>NOTES</notes>
+		<ineffect>0</ineffect>
+		<linksto>0</linksto>		
+		<proplink>1</proplink>
+	</rule>
+</rules>
+<propositions>
+	<prop id="0">
+		<label>date #1?</label>
+		<author>no-one</author>
+		<date>never</date>
+		<text>TEXT</text>
+		<notes>NOTES</notes>
+		<ineffect>1</ineffect>
+		<linksto>1</linksto>		
+		<proplink>1</proplink>
+	</prop>
+	<prop id="1">
+		<label>date #2?</label>
+		<author>no-one</author>
+		<date>never</date>
+		<text>TEXT</text>
+		<notes>NOTES</notes>
+		<ineffect>0</ineffect>
+		<linksto>0</linksto>		
+		<proplink>1</proplink>
+	</prop>
+</propositions>
