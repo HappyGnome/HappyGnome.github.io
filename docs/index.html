@@ -9,32 +9,42 @@
 </head>
 <body>
 	<script type="application/javascript">
+		function ScrollToHash(){
+			var re=/\w+/;
+			var found=location.hash.match(re);
+			if (found && $("#"+found[0]).offset()){
+				$('html, body').animate({scrollTop: $("#"+found[0]).offset().top}, 100, function(){});
+			}
+		};
 		$(document).ready(function(){
 			$.ajax({url:"rules.json", type:"GET", dataType:"json"})
 			.done(function(rules){
 				$("#title_annot").text("updated: " + rules.date +" by "+ rules.updated_by);
+				for (var i=0; i<rules.rules.length; i++){					
+					var rule=rules.rules[i];
+					$("#rules_list").append("<section class=\"rulebox\" id=\"RULE"+rule.id+"\">"+
+					"<div class=\"rulehead\">"+
+						"<h1 id=\"H1\">"+rule.label+"</h1><div class=\"subhead\">"+rule.date+"</div>"+
+					"</div>"+
+					"<div class=\"rulebody\">"+rule.text+"</div>"+
+					"<div class=\"rulefooter\">"+
+						"<div class=\"footnote\">"+rule.notes+"</div>"+
+					"</div></section>");
+				}
+				ScrollToHash();
 			})
 			.fail(function(){
 				alert("Oops! Retrieval of rules data failed.");
 				<!--TODO-->
-			});
+			});	
 		});
 	</script>
 	
 	<div class="page_head">
-		<h1 id="title">Title</h1><h2 id="title_annot">Preamble</h2>
+		<h1 id="title">The Rules</h1><h2 id="title_annot"></h2>
 	</div>
-	<section class="rulebox">
-		<div class="rulehead">
-			<h1 id="H1">Heading</h1><div class="subhead">subhead</div>
-		</div>
-		<div class="rulebody">
-			Rules: blah blah
-		</div>
-		<div class="rulefooter">
-			TODO:footer
-		</div>
-	</section>
+	<div id="rules_list">
+	</div>
 	
 </body>
 </html>

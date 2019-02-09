@@ -1,11 +1,18 @@
 /*
+Defaults####################################################
+*/
+html{
+	font-family: sans-serif;
+}
+/*
 PageHead####################################################
 */
 .page_head{
 	display: flex;	
 	text-align: left;
 	flex-wrap: wrap;
-	align-items: baseline;
+	flex-direction: column;
+	align-items: center;
 }
 .page_head h1{
 	margin: 10px
@@ -14,8 +21,11 @@ PageHead####################################################
 	font-size: 12pt;
 	font-weight: normal;
 	font-style: italic;
-	color:#444444;
+	color:#666666;
 	margin: 5px
+}
+@media only screen and (min-width: 600px){
+	.page_head{flex-direction:row;align-items: baseline;}
 }
 /*
 Rulebox####################################################
@@ -23,25 +33,40 @@ Rulebox####################################################
 .rulebox{
 	color:#000000;
 	border: 2px solid black;
-	border-radius: 0px;	
-	width: 60vw;
+	border-radius: 20px;	
+	width: 90vw;
+	max-width: 900px;
+	margin:5px;	
 	
+}
+
+#rules_list{
+	display: flex;	
+	flex-direction: column;
+	align-items: center;
+}
+@media only screen and (min-width: 600px){
+	#rules_list{align-items: flex-start;}
 }
 .rulebox h1{
 	font-size: 15pt;
 	margin: 10px;
-}
-.rulebox .subhead{
-	color:#444444;
-	margin: 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+.rulebox .subhead{
+	color:#666666;
+	font-size: 10pt;
+	margin: 0 10px 10px 10px;
 	font-style: italic;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	
 }
 .rulebox .rulehead {
 	display: flex;	
 	background-color:#eeeeee;
+	border-radius: 20px 20px 0 0;	
 	text-align: left;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -49,9 +74,22 @@ Rulebox####################################################
 }
 .rulebox .rulebody {
 	text-align: left;
+	font-size: 12pt;
 	margin: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .rulebox .rulefooter{
-	text-align: right;
+	text-align: left;
+	color:#888888;
+	font-size: 10pt;
+	background-color:#eeeeee;
+	border-radius: 0px 0px 20px 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.rulebox .rulefooter .footnote{
 	margin: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
