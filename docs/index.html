@@ -8,10 +8,21 @@
 	<script src="jquery-3.3.1.min.js"></script>
 </head>
 <body>
+	<script type="application/javascript">
+		$(document).ready(function(){
+			$.ajax({url:"rules.json", type:"GET", dataType:"json"})
+			.done(function(rules){
+				$("#title_annot").text("updated: " + rules.date +" by "+ rules.updated_by);
+			})
+			.fail(function(){
+				alert("Oops! Retrieval of rules data failed.");
+				<!--TODO-->
+			});
+		});
+	</script>
 	
-	<div>
-		<div>Title</div>
-		<div>Preamble</div>
+	<div class="page_head">
+		<h1 id="title">Title</h1><h2 id="title_annot">Preamble</h2>
 	</div>
 	<section class="rulebox">
 		<div class="rulehead">
@@ -24,5 +35,6 @@
 			TODO:footer
 		</div>
 	</section>
+	
 </body>
 </html>

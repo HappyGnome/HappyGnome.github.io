@@ -1,3 +1,25 @@
+/*
+PageHead####################################################
+*/
+.page_head{
+	display: flex;	
+	text-align: left;
+	flex-wrap: wrap;
+	align-items: baseline;
+}
+.page_head h1{
+	margin: 10px
+}
+.page_head h2{
+	font-size: 12pt;
+	font-weight: normal;
+	font-style: italic;
+	color:#444444;
+	margin: 5px
+}
+/*
+Rulebox####################################################
+*/
 .rulebox{
 	color:#000000;
 	border: 2px solid black;
@@ -14,6 +36,7 @@
 	margin: 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-style: italic;
 	
 }
 .rulebox .rulehead {
@@ -22,11 +45,13 @@
 	text-align: left;
 	flex-direction: row;
 	flex-wrap: wrap;
-	align-items: center;
+	align-items: baseline;
 }
 .rulebox .rulebody {
 	text-align: left;
+	margin: 10px;
 }
 .rulebox .rulefooter{
 	text-align: right;
+	margin: 10px;
 }
