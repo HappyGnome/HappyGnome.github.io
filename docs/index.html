@@ -11,20 +11,20 @@
 <body>
 	<script type="application/javascript" src="GenerateRuleBox.js"></script>
 	<script type="application/javascript">
-		function ToggleNotes(ruleID){
-			$("#rule"+ruleID+" .rulefooter").toggle();
-		};
-
 		//TODO: sort rules, search.
 		$(document).ready(function(){
 			$.ajax({url:"rules.json", type:"GET", dataType:"json"})
 			.done(function(rules){
 				$("#title_annot").text("updated: " + rules.date +" by "+ rules.updated_by);
-				for (var i=0; i<rules.rules.length; i++){		
+				for (var i in rules.rules){		
 					var rule=rules.rules[i];			
 					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules, i));
 					else $("#rules_list_repealed").append(GenerateRuleBox(rules.rules,i))
 				}
+				//refresh hash:
+				var hash=location.hash;
+				location.hash="";
+				location.hash=hash;
 			})
 			.fail(function(){
 				alert("Oops! Retrieval of rules data failed.");

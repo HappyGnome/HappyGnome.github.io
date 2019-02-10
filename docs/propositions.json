@@ -1,6 +1,6 @@
 {
-	"propositions":[
-		{"id":"0",
+	"propositions":{
+		"0":{
 		"author":"no-one",
 		"label":"date #1?",
 		"date":"never",
@@ -10,7 +10,7 @@
 		"linksto":["1"],
 		"proplinks":["1"]
 		},
-		{"id":"1",
+		"1":{
 		"author":"no-one",
 		"label":"date #2?",
 		"date":"never",
@@ -20,7 +20,7 @@
 		"linksto":["1"],
 		"proplinks":["1"]
 		},
-		{"id":"2",
+		"2":{
 		"author":"no-one",
 		"label":"date #2?",
 		"date":"never",
@@ -30,5 +30,5 @@
 		"linksto":["1"],
 		"proplinks":["1"]
 		}
-	]
+	}
 }

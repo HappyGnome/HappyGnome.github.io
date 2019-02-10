@@ -1,12 +1,15 @@
-function GenerateRuleBox(rules,rule_ind, toggle_notes=true, show_notes=false, rule_lookup="", details=true){
-	var rule=rules[rule_ind];
-	var S="<section class=\"rulebox\" id=\"rule"+rule.id+"\">"+
+function ToggleNotes(ruleID){
+			$("#"+ruleID+" .rulefooter").toggle();
+}
+function GenerateRuleBox(rules,rule_key,id_prefix="rule", toggle_notes=true, show_notes=false, rule_lookup_url="", rule_name_lookup=null, details=true){
+	var rule=rules[rule_key];
+	var S="<section class=\"rulebox\" id=\""+id_prefix+rule_key+"\">"+
 			"<div class=\"rulehead\"><h1>"+
 				rule.label+"</h1>";
 				if(details)S=S+"<div class=\"detail_link\">[<a href=rule_details.html?"
-		+rule.id+">details</a>]</div>";
+		+rule_key+">details</a>]</div>";
 		S=S+"<div class=\"subhead\">"+rule.date+"</div></div><div class=\"rulebody\" ";
-		if(toggle_notes) S=S+"onclick=\"ToggleNotes("+rule.id+")\"";
+		if(toggle_notes) S=S+"onclick=\"ToggleNotes('"+id_prefix+rule_key+"')\"";
 		S=S+">"+rule.text+"</div>";
 		if(rule.notes.length || rule.linksto.length){
 			S=S+"<div class=\"rulefooter\"";
@@ -16,7 +19,12 @@ function GenerateRuleBox(rules,rule_ind, toggle_notes=true, show_notes=false, ru
 				S+="<div class=\"cf\"> <i>c.f. rules:</i>";
 				for (var j=rule.linksto.length-1; j>=0; --j){
 					var ind=rule.linksto[j];
-					S+="<a href=\""+rule_lookup+"#rule"+rules[ind].id+"\"> "+rules[ind].label+"</a>"
+					var label=""
+					if(rule_name_lookup){//look in external rule list if given
+						label=rule_name_lookup[ind].label;
+					}
+					else label=rules[ind].label;
+					S+="<a href=\""+rule_lookup_url+"#rule"+ind+"\"> "+label+"</a>"
 				}
 				S+="</div>";
 			}						

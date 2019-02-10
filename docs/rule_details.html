@@ -11,9 +11,6 @@
 <body>
 	<script type="application/javascript" src="GenerateRuleBox.js"></script>
 	<script type="application/javascript">
-		function ToggleNotes(ruleID){
-			$("#rule"+ruleID+" .rulefooter").toggle();
-		};
 		$(document).ready(function(){	
 			var ruleIDstr=/[0-9]+/.exec(location.search);	
 			if(ruleIDstr){
@@ -30,10 +27,10 @@
 					//load propositions while we render the rule##############################
 					$.ajax({url:"propositions.json", type:"GET", dataType:"json"})
 					.done(function(props){
-						for (var i=0; i<props.propositions.length; i++){		
+						for (var i in props.propositions){		
 							var prop=props.propositions[i];			
-							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.propositions, i,true,false,"index.html",false));
-							else $("#prop_list_repealed").append(GenerateRuleBox(props.propositions,i,true,false,"index.html",false))
+							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.propositions, i,"prop",true,false,"index.html",rules.rules,false));
+							else $("#prop_list_repealed").append(GenerateRuleBox(props.propositions,i,"prop",true,false,"index.html",rules.rules,false))
 						}
 					})
 					.fail(function(){
@@ -42,8 +39,8 @@
 					});
 					
 					//Back to the rule!#################################################
-					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules,ruleID,true,true,"index.html",false));
-					else $("#rules_list_repealed").append(GenerateRuleBox(rules.rules,ruleID,true,true,"index.html",false))
+					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules,ruleID,"rule",true,true,"index.html",false));
+					else $("#rules_list_repealed").append(GenerateRuleBox(rules.rules,ruleID,true,"rule",true,"index.html",false))
 				})
 				.fail(function(){
 					alert("Oops! Retrieval of rules data failed.");
