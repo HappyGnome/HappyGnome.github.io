@@ -260,11 +260,13 @@ def cmdAdd(args):
     if label_data[0]=="p":#author required
         auth=input(" Proposer name: ")
         add_to_list[new_id]["author"]=auth
-      
+        
+    UpdateIndexByLabel()      
     return True
 
 def cmdClear(args):
     global rules, props
+    global selection, sel_mode, selected_id, selected_obj,  selected_objlist, selected_by_label
     b=input(" Warning! Clear all rules and propositions (Y/N)? ")
     if not b in ["Y","y"]: 
         print(" Nothing cleared - breathe!")
@@ -272,6 +274,13 @@ def cmdClear(args):
     print(" Clearing...")
     rules={"rules":{}, "author":"", "date":""}
     props={"propositions":{}, "author":"", "date":""} 
+    
+    selection=""#clear selection
+    selected_id=""
+    selected_objlist=None
+    selected_obj=None
+    selected_by_label=None
+    UpdateIndexByLabel()
     return True
 '''
 ************************************************************
