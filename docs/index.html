@@ -9,50 +9,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+	<script type="application/javascript" src="GenerateRuleBox.js"></script>
 	<script type="application/javascript">
-		function ScrollToHash(){
-			var re=/\w+/;
-			var found=location.hash.match(re);
-			if (found && $("#"+found[0]).length){
-				$("html, body").animate({scrollTop: $("#"+found[0]).offset().top}, 100, function(){});
-			}
-		};
 		function ToggleNotes(ruleID){
 			$("#rule"+ruleID+" .rulefooter").toggle();
 		};
+
 		//TODO: sort rules, search.
 		$(document).ready(function(){
 			$.ajax({url:"rules.json", type:"GET", dataType:"json"})
 			.done(function(rules){
 				$("#title_annot").text("updated: " + rules.date +" by "+ rules.updated_by);
-				for (var i=0; i<rules.rules.length; i++){					
-					var rule=rules.rules[i];
-					var S="<section class=\"rulebox\" id=\"rule"+rule.id+"\">"+
-					"<div class=\"rulehead\">"+
-						"<h1 id=\"H1\">"+rule.label+"</h1><div class=\"subhead\">"+rule.date+"</div>"+
-					"</div>"+
-					"<div class=\"rulebody\" onclick=\"ToggleNotes("+rule.id+")\">"+rule.text+"</div>";
-					if(rule.notes.length || rule.linksto.length){
-						S=S+"<div class=\"rulefooter\">";
-						if(rule.linksto.length){//C.F.		
-							S+="<div class=\"cf\"> <i>c.f. rules:</i>";
-							for (var j=rule.linksto.length-1; j>=0; --j){
-								var ind=rule.linksto[j];
-								S+="<a href=\"#rule"+rules.rules[ind].id+"\"> "+rules.rules[ind].label+"</a>"
-							}
-							S+="</div>";
-						}						
-						S=S+"<ul>";//Notes
-						for (var j=rule.notes.length-1; j>=0; --j){
-							var note=rule.notes[j];
-							S=S+"<li class=\"footnote\">"+note.content+"<span class=attrib> - "+note.author+" "+note.date+"</span></li>";
-						}
-						S+="</ul></div>";
-					}
-					if(rule.ineffect=="1") $("#rules_list").append(S+"</section>");
-					else $("#rules_list_repealed").append(S+"</section>")
+				for (var i=0; i<rules.rules.length; i++){		
+					var rule=rules.rules[i];			
+					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules, i));
+					else $("#rules_list_repealed").append(GenerateRuleBox(rules.rules,i))
 				}
-				ScrollToHash();
 			})
 			.fail(function(){
 				alert("Oops! Retrieval of rules data failed.");
@@ -67,7 +39,7 @@
 	<div class="rules_list" id="rules_list">
 	</div>
 	<h2 class="repealed_heading">Repealed Rules</h2>
-	<div class="rules_list" id="rules_list_repealed">
+	<div class="rules_list_repealed rules_list " id="rules_list_repealed">
 	</div>
 </body>
 </html>

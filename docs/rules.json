@@ -6,7 +6,7 @@
 		"label":"000",
 		"date":"never",
 		"text":"TEXT",
-		"notes":[{"author":"me", "date":"just now","content":"NOTES"},{"author":"me", "date":"just now","content":"NOTES <a href=\"#rule7\">Rule 7</a>"}],
+		"notes":[{"author":"me", "date":"just now","content":"NOTES"},{"author":"me", "date":"just now","content":"NOTES <a href=\"index.html#rule7\">Rule 7</a>"}],
 		"ineffect":"1",
 		"linksto":["1"],
 		"proplinks":["1"]
@@ -73,28 +73,6 @@
 		"ineffect":"1",
 		"linksto":["0"],
 		"proplinks":["0"]
-		}
-	],
-	"propositions":[
-		{"id":"0",
-		"author":"no-one",
-		"label":"date #1?",
-		"date":"never",
-		"text":"TEXT",
-		"notes":"NOTES",
-		"ineffect":"1",
-		"linksto":["1"],
-		"proplinks":["1"]
-		},
-		{"id":"1",
-		"author":"no-one",
-		"label":"date #2?",
-		"date":"never",
-		"text":"TEXT",
-		"notes":"NOTES",
-		"ineffect":"1",
-		"linksto":["1"],
-		"proplinks":["1"]
 		}
 	]
 }

@@ -24,7 +24,7 @@ PageHead####################################################
 	color:#666666;
 	margin: 5px
 }
-@media all and (min-width: 600px){
+@media screen and (min-width: 600px){
 	.page_head{flex-direction:row;align-items: baseline;}
 }
 /*
@@ -46,7 +46,7 @@ Rulebox####################################################
 	flex-direction: column;
 	align-items: center;
 }
-@media all and (min-width: 600px){
+@media screen and (min-width: 600px){
 	.rules_list{align-items: flex-start;}
 }
 .rulebox h1{
@@ -66,13 +66,16 @@ Rulebox####################################################
 	
 }
 .rulebox .rulehead {
-	display: flex;	
-	background-color:#eeeeee;
-	border-radius: 20px 20px 0 0;	
-	text-align: left;
+	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
 	align-items: baseline;
+	background-color:#eeeeee;
+	border-radius: 20px 20px 0 0;
+	overflow: hidden;
+}
+.rulebox .detail_link {
+	font-size: 10pt;
+	color:#666666;
 }
 .rulebox .rulebody {
 	text-align: left;
@@ -90,7 +93,6 @@ Rulebox####################################################
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding: 10px;
-	display: none;
 }
 .rulebox .rulefooter .cf{
 	font-size: 10pt;
@@ -120,30 +122,21 @@ Rulebox_repealed####################################################
 	font-size: 17pt;
 }
 
-#rules_list_repealed .rulebox{
+.rules_list_repealed .rulebox{
 	color:#444444;
 	border: 1px solid #444444;
 	background-color:#dddddd;	
 }
 
-#rules_list_repealed  .rulebox .subhead{
+.rules_list_repealed  .rulebox .subhead{
 	color:#666666;	
 }
-#rules_list_repealed  .rulebox .rulehead {
+.rules_list_repealed  .rulebox .rulehead {
 	background-color:inherit;
 }
-#rules_list_repealed  .rulebox .rulebody {
-	
-}
-#rules_list_repealed  .rulebox .rulefooter{
+.rules_list_repealed  .rulebox .rulefooter{
 	background-color:inherit;
 }
-#rules_list_repealed  .rulebox .rulefooter .footnote{
+.rules_list_repealed  .rulebox .rulefooter .footnote{
 	color:#888888;
-}
-#rules_list_repealed  .rulebox .rulefooter .footnote .attrib{
-
-}
-#rules_list_repealed  .rulebox .rulefooter ul{
-	
 }

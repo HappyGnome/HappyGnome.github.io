@@ -1,0 +1,34 @@
+{
+	"propositions":[
+		{"id":"0",
+		"author":"no-one",
+		"label":"date #1?",
+		"date":"never",
+		"text":"TEXT",
+		"notes":[{"author":"me", "date":"just now","content":"NOTES"}],
+		"ineffect":"1",
+		"linksto":["1"],
+		"proplinks":["1"]
+		},
+		{"id":"1",
+		"author":"no-one",
+		"label":"date #2?",
+		"date":"never",
+		"text":"TEXT",
+		"notes":[{"author":"me", "date":"just now","content":"NOTES"}],
+		"ineffect":"1",
+		"linksto":["1"],
+		"proplinks":["1"]
+		},
+		{"id":"2",
+		"author":"no-one",
+		"label":"date #2?",
+		"date":"never",
+		"text":"TEXT",
+		"notes":[{"author":"me", "date":"just now","content":"NOTES"}],
+		"ineffect":"0",
+		"linksto":["1"],
+		"proplinks":["1"]
+		}
+	]
+}
