@@ -24,7 +24,7 @@ function GenerateRuleBox(rules,rule_key,id_prefix="rule", toggle_notes=true, sho
 						label=rule_name_lookup[ind].label;
 					}
 					else label=rules[ind].label;
-					S+="<a href=\""+rule_lookup_url+"#rule"+ind+"\"> "+label+"</a>"
+					S+="<a href=\""+rule_lookup_url+"#rule"+ind+"\">"+label+"</a> "
 				}
 				S+="</div>";
 			}						

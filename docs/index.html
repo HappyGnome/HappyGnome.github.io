@@ -15,7 +15,7 @@
 		$(document).ready(function(){
 			$.ajax({url:"rules.json", type:"GET", dataType:"json"})
 			.done(function(rules){
-				$("#title_annot").text("updated: " + rules.date +" by "+ rules.updated_by);
+				$("#title_annot").text("updated: " + rules.date +" by "+ rules.author);
 				for (var i in rules.rules){		
 					var rule=rules.rules[i];			
 					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules, i));

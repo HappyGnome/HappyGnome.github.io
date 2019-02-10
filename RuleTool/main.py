@@ -5,8 +5,9 @@ Created on Sun Feb 10 17:03:57 2019
 @author: Ben
 """
 
-import json;
-import subprocess as sp;
+import json
+import subprocess as sp
+import datetime
 
 
 #load config or create it
@@ -55,8 +56,13 @@ def getIndexByLabel(arr):
         ret[arr[a]["label"]]=a
     return ret
 
-rules_by_label=getIndexByLabel(rules["rules"])
-props_by_label=getIndexByLabel(props["propositions"])
+rules_by_label=None
+props_by_label=None
+def UpdateIndexByLabel():
+    global rules_by_label, props_by_label
+    rules_by_label=getIndexByLabel(rules["rules"])
+    props_by_label=getIndexByLabel(props["propositions"])
+UpdateIndexByLabel()
 
 '''
 ##############################################################
@@ -65,7 +71,11 @@ CLI
 '''
 selection="" #user readable string for selected object label in cli
 sel_mode="r"#"p" or "r" for proposition or rule
-selected_obj_id=""
+selected_id=""
+selected_obj=None
+selected_objlist=rules["rules"]#props or rules
+selected_by_label=rules_by_label
+
 
 def editText(text):#open text editor and let user edit text, return edited version
     try:
@@ -104,6 +114,9 @@ def toRulesLabel(strings):
             st=st+s[:-1]+" "#strip trailing \
     return [strings[0][:],st,ind]  
     
+def SetAuthorDate(obj):
+    obj["author"]=config["user"]
+    obj["date"]=str(datetime.date.today())
 '''
 ************************************************************
 Command handlers
@@ -111,6 +124,8 @@ Command handlers
 def cmdExit(args):
     return False
 def cmdSave(args):
+    SetAuthorDate(rules)
+    SetAuthorDate(props)
     try:
         with open(rules_path,"w") as rules_file:
             json.dump(rules,rules_file)
@@ -126,10 +141,13 @@ def cmdSave(args):
     return True
 
 def cmdSel(args):
-    global selection, sel_mode, selected_obj_id
+    global selection, sel_mode, selected_id, selected_obj,  selected_objlist, selected_by_label
     if len(args)<1:#return to root
         selection=""
-        selected_obj_id=""
+        selected_id=""
+        selected_objlist=None
+        selected_obj=None
+        selected_by_label=None
         return True
     labeldata=toRulesLabel(args)
     if not labeldata: return True
@@ -138,19 +156,123 @@ def cmdSel(args):
     
     if sel_mode=='r':        
         if label in rules_by_label:
-            selection="rule"+label            
-            selected_obj_id=rules_by_label[label]
+            selection=sel_mode+label   
+            selected_objlist=rules["rules"]
+            selected_id=rules_by_label[label] 
+            selected_obj=selected_objlist[selected_id]
+            selected_by_label=rules_by_label
     else:
         if label in props_by_label:
-            selection="prop"+label
-            selected_obj_id=props_by_label[label]
+            selection=sel_mode+label
+            selected_objlist=props["propositions"]
+            selected_id=props_by_label[label]   
+            selected_obj=selected_objlist[selected_id]
+            selected_by_label=props_by_label
     return True
 
-def cmdEdit(args):
-    
-    
+
+
+def cmdEdit_label(args):
+    global selection
+    if not selected_obj: return True
+    st=input(" New label: ")
+    if len(st)<1: return True
+    if st in selected_by_label:
+        b=input(" Warning! Label already in use. Continue (Y/N)? ")
+        if not b in ["Y","y"]: 
+            print(" Label not set.")
+            return True 
+    selected_obj["label"]=st
+    selection=sel_mode+st
+    UpdateIndexByLabel()
+    print(" Label set.")
     return True
     
+def cmdEdit_text(args):
+    if not selected_obj: return True
+    selected_obj["text"]=editText(selected_obj["text"])
+    return True
+    
+def cmdEdit_addnote(args):
+    if not selected_obj: return True
+    note={"content":editText("")}
+    SetAuthorDate(note)
+    selected_obj["notes"].insert(0,note)
+    return True
+    
+edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "n_a":cmdEdit_addnote}
+def cmdEdit(args):
+    if len(args)<1: return True
+    
+    if args[0] in edit_handlers:
+        return edit_handlers[args[0]](args[1:])
+    return True
+
+def cmdLink(args):
+    if not selected_obj: return True
+    label_data=toRulesLabel(args)
+    if not label_data:
+        print(" Linked item not found.")
+        return True
+    
+    if label_data[0]=="r":
+        if label_data[1] in rules_by_label:
+            label_id=rules_by_label[label_data[1]]
+            if not label_id in selected_obj["linksto"]:
+                selected_obj["linksto"].append(label_id)
+            if sel_mode=="r" and not selected_id in rules["rules"][label_id]["linksto"]:
+                rules["rules"][label_id]["linksto"].append(selected_id)
+            if sel_mode=="p" and not selected_id in rules["rules"][label_id]["proplinks"]:
+                rules["rules"][label_id]["proplinks"].append(selected_id)
+    elif label_data[0]=="p":
+        if label_data[1] in props_by_label:
+            label_id=props_by_label[label_data[1]]
+            if not label_id in selected_obj["proplinks"]:
+                selected_obj["proplinks"].append(label_id)
+            if sel_mode=="r" and not selected_id in props["propositions"][label_id]["linksto"]:
+                props["propositions"][label_id]["linksto"].append(selected_id)
+            if sel_mode=="p" and not selected_id in props["propositions"][label_id]["proplinks"]:
+                props["propositions"][label_id]["proplinks"].append(selected_id)
+    
+    return True
+def cmdAdd(args):
+    label_data=toRulesLabel(args)
+    if not label_data: return True
+    
+    add_to_list=props["propositions"]
+    if label_data[0]=="r":
+        add_to_list=rules["rules"]           
+    #find ID
+    new_id=""
+    j=len(add_to_list)
+    while True:
+        if not str(j) in add_to_list:
+            new_id=str(j)
+            break
+        j=j+1
+    add_to_list[new_id]={"ineffect":"1", "linksto":[], "notes":[], 
+               "label":label_data[1], "proplinks":[], "text":""}
+    date=input(" Date created (if not today): ")
+    if date=="":
+        date=str(datetime.date.today())
+    add_to_list[new_id]["date"]=date
+    
+    if label_data[0]=="p":#author required
+        auth=input(" Proposer name: ")
+        add_to_list[new_id]["author"]=auth
+      
+    return True
+
+def cmdClear(args):
+    global rules, props
+    b=input(" Warning! Clear all rules and propositions (Y/N)? ")
+    if not b in ["Y","y"]: 
+        print(" Nothing cleared - breathe!")
+        return True 
+    print(" Clearing...")
+    rules={"rules":{}, "author":"", "date":""}
+    props={"propositions":{}, "author":"", "date":""} 
+    return True
 '''
 ************************************************************
 Main CLI cmd parser
@@ -158,7 +280,8 @@ Main CLI cmd parser
 return False to terminate main loop
 '''
 handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel, 
-          "edit":cmdEdit}#, "add":cmdAdd, "del":cmdDel, "link":cmdLink, ""}#define handlers
+          "edit":cmdEdit, "add":cmdAdd, "link":cmdLink, 
+          "clear_all":cmdClear}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks
