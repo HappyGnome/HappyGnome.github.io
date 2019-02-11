@@ -12,10 +12,9 @@ import datetime
 
 #load config or create it
 config={"user":"", "sitepath":"", "editor":"notepad.exe"}
-try:
-    with open("config.json","r") as config_file:
-        config=json.load(config_file)
-except:
+
+def cmdConfig(args):
+    global config
     config["user"]=input("Enter username: ")
     config["sitepath"]=input("Enter local path to website data: ")
     config["editor"]=input("Text editor: ")
@@ -23,8 +22,16 @@ except:
         with open("config.json","w") as config_file:
             json.dump(config,config_file)
     except:
-        print("Failed to create config! Exiting...")
-        exit(1)
+        return False
+    return True
+
+try:
+    with open("config.json","r") as config_file:
+        config=json.load(config_file)
+except:
+        if not cmdConfig(None):
+            print("Failed to create config! Exiting...")
+            exit(1)
 
 
 #load json files for the website
@@ -93,6 +100,25 @@ def editText(text):#open text editor and let user edit text, return edited versi
     except:
         print("Error editing file!")
         return text
+    
+def editText_paras(paras):#calls editText on text consisting of given paragraphs. 
+#Parses output to return new list of paragraphs
+    text=""
+    for p in paras:
+        text+=p+"\n\n"
+    text=editText(text)
+    
+    ret=[]
+    para=""
+    for line in text.splitlines():
+        if line.lstrip()=="":
+            ret.append(para[:])
+            para=""
+        else:
+            para+=line+"\n"
+    if para!="":
+        ret.append(para)#catch final paragraph
+    return ret
 #convert e.g. ["pxyz\","abc", "dfg"] to ["p", "xyz abc", ind]
 #ind=index of first argument not parsed
 #or return None
@@ -190,7 +216,8 @@ def cmdEdit_label(args):
     
 def cmdEdit_text(args):
     if not selected_obj: return True
-    selected_obj["text"]=editText(selected_obj["text"])
+    
+    selected_obj["text"]=editText_paras(selected_obj["text"])
     return True
     
 def cmdEdit_addnote(args):
@@ -290,7 +317,7 @@ return False to terminate main loop
 '''
 handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel, 
           "edit":cmdEdit, "add":cmdAdd, "link":cmdLink, 
-          "clear_all":cmdClear}# "del":cmdDel, ""}#define handlers
+          "clear_all":cmdClear, "config":cmdConfig}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks
