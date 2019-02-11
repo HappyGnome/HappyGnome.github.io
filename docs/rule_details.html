@@ -27,10 +27,10 @@
 					//load propositions while we render the rule##############################
 					$.ajax({url:"propositions.json", type:"GET", dataType:"json"})
 					.done(function(props){
-						for (var i in props.propositions){		
-							var prop=props.propositions[i];			
-							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.propositions, i,"prop",true,false,"index.html",rules.rules,false));
-							else $("#prop_list_repealed").append(GenerateRuleBox(props.propositions,i,"prop",true,false,"index.html",rules.rules,false))
+						for (var i=0; i<rule["proplinks"].length; i++){		
+							var prop=props.propositions[rule["proplinks"][i]];			
+							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.propositions, rule["proplinks"][i],"prop",true,false,"index.html",rules.rules,false));
+							else $("#prop_list_repealed").append(GenerateRuleBox(props.propositions,rule["proplinks"][i],"prop",true,false,"index.html",rules.rules,false))
 						}
 					})
 					.fail(function(){

@@ -10,7 +10,12 @@ function GenerateRuleBox(rules,rule_key,id_prefix="rule", toggle_notes=true, sho
 		+rule_key+">details</a>]</div>";
 		S=S+"<div class=\"subhead\">"+rule.date+"</div></div><div class=\"rulebody\" ";
 		if(toggle_notes) S=S+"onclick=\"ToggleNotes('"+id_prefix+rule_key+"')\"";
-		S=S+">"+rule.text+"</div>";
+		S=S+">";
+		for (var i=0; i<rule.text.length; i++)
+		{
+			S=S+"<p>"+rule.text[i]+"</p>";
+		}
+		S=S+"</div>";
 		if(rule.notes.length || rule.linksto.length){
 			S=S+"<div class=\"rulefooter\"";
 			if(!show_notes)S=S+"style=\"display:none;\"";
