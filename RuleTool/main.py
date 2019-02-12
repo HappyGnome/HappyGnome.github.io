@@ -9,8 +9,6 @@ import json
 import subprocess as sp
 import datetime
 
-import rule_prop_table as RPT
-
 
 #load config or create it
 config={"user":"", "sitepath":"", "editor":"notepad.exe"}
@@ -37,21 +35,21 @@ except:
 
 
 #load json files for the website
-rules=RPT.rule_prop_table();
-props=RPT.rule_prop_table();
+rules=None;
+props=None;
 rules_path=config["sitepath"]+"rules.json"
 props_path=config["sitepath"]+"propositions.json"
 
 try:
     with open(rules_path,"r") as rules_file:
-        rules.from_dict(json.load(rules_file))
+        rules=json.load(rules_file)
 except:
     print("Failed to load rules! Exiting...")
     exit(1)
 
 try:
     with open(props_path,"r") as props_file:
-        props.from_dict(json.load(props_file))
+        props=json.load(props_file)
 except:
     print("Failed to load propositions! Exiting...")
     exit(1)
