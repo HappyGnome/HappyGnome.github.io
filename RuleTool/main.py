@@ -274,7 +274,7 @@ def cmdLink(args):
                 props["propositions"][label_id]["proplinks"].append(selected_id)
     
     return True
-def cmdAdd(args):
+def cmdAdd(args):#TODO:prevent duplicates
     label_data=toRulesLabel(args)
     if not label_data: return True
     
