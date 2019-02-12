@@ -1,3 +1,4 @@
 RuleTool/*.json
 RuleTool/*.txt
+RuleTool/.spyproject/workspace.ini
 *.pdf
