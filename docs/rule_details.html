@@ -27,10 +27,10 @@
 					//load propositions while we render the rule##############################
 					$.ajax({url:"propositions.json", type:"GET", dataType:"json"})
 					.done(function(props){
-						for (var i=0; i<rule["proplinks"].length; i++){		
-							var prop=props.propositions[rule["proplinks"][i]];			
-							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.propositions, rule["proplinks"][i],"prop",true,false,"index.html",rules.rules,false));
-							else $("#prop_list_repealed").append(GenerateRuleBox(props.propositions,rule["proplinks"][i],"prop",true,false,"index.html",rules.rules,false))
+						for (var i=0; i<rule.proplinks.length; i++){		
+							var prop=props.propositions[rule.proplinks[i]];			
+							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.propositions, rule.proplinks[i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.rules,details:false, show_author:true}));
+							else $("#prop_list_repealed").append(GenerateRuleBox(props.propositions,rule.proplinks[i], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.rules,details:false, show_author:true}))
 						}
 					})
 					.fail(function(){
@@ -39,8 +39,8 @@
 					});
 					
 					//Back to the rule!#################################################
-					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules,ruleID,"rule",true,true,"index.html",false));
-					else $("#rules_list_repealed").append(GenerateRuleBox(rules.rules,ruleID,true,"rule",true,"index.html",false))
+					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}));
+					else $("#rules_list_repealed").append(GenerateRuleBox(rules.rules,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}))
 				})
 				.fail(function(){
 					alert("Oops! Retrieval of rules data failed.");
