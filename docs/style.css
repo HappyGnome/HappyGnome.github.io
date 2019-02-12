@@ -5,6 +5,42 @@ html{
 	font-family: sans-serif;
 }
 /*
+nav####################################################
+*/
+nav{
+	width:100vw;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #ffffff;
+	transition: top 0.5s;
+
+}
+nav .navinner{
+	display: flex;
+	justify-content: space-around;
+
+}
+nav .navinner .navlink{
+	text-decoration: none;
+	background-color: #eeeeee;
+	color:#000000;
+	border-width: 2px;
+	border-color: black;
+	border-style: none solid solid solid;
+	border-radius: 0px 0px 5px 5px;
+	padding-left:auto;
+	padding-right:auto;
+	flex:1;
+	text-align: center;
+}
+nav .navinner .navlink_s{
+	background-color: transparent;
+	color:transparent;
+	border: None;
+	
+}
+/*
 PageHead####################################################
 */
 .page_head{

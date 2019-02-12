@@ -8,29 +8,6 @@
 	<script src="jquery-3.3.1.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	<script type="application/javascript" src="GenerateRuleBox.js"></script>
-	<script type="application/javascript">
-		//TODO: sort rules, search.
-		$(document).ready(function(){
-			$.ajax({url:"rules.json", type:"GET", dataType:"json"})
-			.done(function(rules){
-				$("#title_annot").text("updated: " + rules.date +" by "+ rules.author);
-				for (var i in rules.rules){		
-					var rule=rules.rules[i];			
-					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules, i));
-					else $("#rules_list_repealed").append(GenerateRuleBox(rules.rules,i))
-				}
-				//refresh hash:
-				//var hash=location.hash;
-				//location.hash="";
-				//location.hash=hash;
-			})
-			.fail(function(){
-				alert("Oops! Retrieval of rules data failed.");
-				<!--TODO-->
-			});	
-		});
-	</script>
 	<script type="application/javascript">
 		var prev_scroll=0;
 		$(window).scroll(function(){
@@ -45,9 +22,9 @@
 
 	<nav>
 		<div class="navinner">
-			<a class="navlink_s navlink" href="index.html">RULES</a>
+			<a class="navlink" href="index.html">RULES</a>
 			<a class="navlink" href="rule_details.html">1</a>
-			<a class="navlink" href="propositions.html">2</a>
+			<a class="navlink navlink_s" href="propositions.html">2</a>
 		</div>
 	</nav>
 	<div class="page_head">

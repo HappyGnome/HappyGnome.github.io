@@ -7,8 +7,7 @@
 	<link rel="stylesheet" href="style.css">
 	<script src="jquery-3.3.1.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+	
 	<script type="application/javascript" src="GenerateRuleBox.js"></script>
 	<script type="application/javascript">
 		$(document).ready(function(){	
@@ -49,6 +48,25 @@
 			}
 		});
 	</script>
+	<script type="application/javascript">
+		var prev_scroll=0;
+		$(window).scroll(function(){
+			var new_scroll=$('html, body').scrollTop();
+			if (new_scroll<window.prev_scroll) $("nav").css("top","0px");
+			else $("nav").css("top","-30px");
+			window.prev_scroll=new_scroll;
+		});
+	</script>
+</head>
+<body>
+	
+	<nav>
+		<div class="navinner">
+						<a class="navlink" href="index.html">RULES</a>
+			<a class="navlink navlink_s" href="rule_details.html">1</a>
+			<a class="navlink" href="propositions.html">2</a>
+		</div>
+	</nav>
 	
 	<div class="page_head">
 		<h1 id="title">Rule Details</h1><h2 id="title_annot"></h2>
