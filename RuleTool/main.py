@@ -226,8 +226,20 @@ def cmdEdit_addnote(args):
     SetAuthorDate(note)
     selected_obj["notes"].insert(0,note)
     return True
+
+def cmdEdit_setInEffect(args):
+    if not selected_obj: return True
+    if len(args)<1: return True
     
-edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "n_a":cmdEdit_addnote}
+    if args[0] in ["Y","y"]:
+        selected_obj["ineffect"]='1'
+    else:
+        selected_obj["ineffect"]='0'
+        
+    return True
+    
+edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, 
+               "se":cmdEdit_setInEffect}
 def cmdEdit(args):
     if len(args)<1: return True
     
