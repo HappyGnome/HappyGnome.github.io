@@ -145,9 +145,9 @@ class rule_prop_table(dictable.dictable):
     
     def addDefaultItem(self,label):
         #pick ID
-        item=self.default_item()
+        item=self.getDefaultCopy()
         item.label=label
-        self.add(item)
+        self.addItem(item)
     
     def rmvItem(self, item_id):
         try:
@@ -176,10 +176,10 @@ class rule_prop_table(dictable.dictable):
             rpt=self.companions[linked_item_in]
             linksback=rpt.__items__[linked_id].linksto[self.type_string]
             if not item_id in linksback:
-                linksback.append[item_id]
+                linksback.append(item_id)
             linksfwd=item_here.linksto[linked_item_in]
             if not linked_id in linksfwd:
-                linksfwd.append[linked_id]                
+                linksfwd.append(linked_id)               
             
             return True
         except KeyError:

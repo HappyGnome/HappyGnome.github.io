@@ -53,15 +53,14 @@ try:
     with open(rules_path,"r") as rules_file:
         rules.from_dict(json.load(rules_file))
 except:
-    print("Failed to load rules! Exiting...")
-    sys.exit(1)
-
+    print("Failed to load rules!")
+    
 try:
     with open(props_path,"r") as props_file:
         props.from_dict(json.load(props_file))
 except:
-    print("Failed to load propositions! Exiting...")
-    sys.exit(1)
+    print("Failed to load propositions!")
+    
 
 
 '''
@@ -173,22 +172,22 @@ def cmdSave(args):
 
 def ResolveID(items):
     if len(items)<1: return ["",""]
-    if len(items)==1: return [list(items)[0],list(items)[0]]
+    if len(items)==1: return [list(items)[0],""]
     
     #Multiple items!
     preview_text=""
     i=0
     conv={}#{"i":"k"} pairs
     for k in items:
-        preview_text+="############################_"+str(i)+"_############################"
-        preview_text+=str(items[k].to_dict())
+        preview_text+="############################_"+str(i)+"_############################\n"
+        preview_text+=str(items[k].to_dict())+"\n"
         i+=1
         conv[str(i)]=k
     previewText(preview_text)    
     
     s=input("Please enter the number of the item to select: ")
     if s in conv:
-        return [conv[s], conv[s]+"#"+s]
+        return [conv[s], "#"+s]
     return ["",""]
 
 #return [resolved id,mode, selection_string, selected_object] from args ["mode","...\","..."]
@@ -206,7 +205,7 @@ def ArgsToID(args):
     matched_items=T.getItemsByLabel(label)
     resolved=ResolveID(matched_items)
     if resolved[0]=="": return ["","","",None]
-    return [resolved[0],mode,resolved[1],matched_items[resolved[0]]]
+    return [resolved[0],mode,mode+label+resolved[1],matched_items[resolved[0]]]
   
 def cmdSel(args):
     global selection, sel_mode, selected_id, selected_obj
@@ -227,6 +226,21 @@ def cmdSel(args):
     
     return True
 
+def cmdRm(args):
+    global selection, sel_mode, selected_id, selected_obj
+    
+    [item_id,mode,sel_string, sel_obj]=ArgsToID(args)
+    
+    if item_id=="": return True
+    if sel_obj==selected_obj:
+        selection=""
+        selected_id=""
+        selected_obj=None
+    
+    tables[mode].rmvItem(item_id)
+    
+    return True
+
 
 
 def cmdEdit_label(args):
@@ -234,7 +248,7 @@ def cmdEdit_label(args):
     if not selected_obj: return True
     st=input(" New label: ")
     if len(st)<1: return True
-    if len(tables[sel_mode].getItemsByLabel())>0:
+    if len(tables[sel_mode].getItemsByLabel(st))>0:
         b=input(" Warning! Label already in use. Continue (Y/N)? ")
         if not b in ["Y","y"]: 
             print(" Label not set.")
@@ -323,7 +337,7 @@ return False to terminate main loop
 '''
 handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel, 
           "edit":cmdEdit, "add":cmdAdd, "link":cmdLink, 
-          "clear_all":cmdClear, "config":cmdConfig}# "del":cmdDel, ""}#define handlers
+          "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks
