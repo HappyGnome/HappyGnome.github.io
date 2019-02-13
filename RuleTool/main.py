@@ -36,6 +36,15 @@ except:
 
 
 #load json files for the website
+days=rpt.rule_prop_table("days")
+days.default_item=rpt.rpi_day()
+
+psoo=rpt.rule_prop_table("psoo")
+psoo.default_item=rpt.rpi_poo()
+
+jdgmts=rpt.rule_prop_table("jdgmts")
+jdgmts.default_item=rpt.rpi_jdgmt()
+
 rules=rpt.rule_prop_table("rules")
 rules.default_item=rpt.rpi_rule()
 
@@ -43,23 +52,23 @@ props=rpt.rule_prop_table("props")
 props.default_item=rpt.rpi_prop()
 
 rules.setCompanion(props)#link the two rpts
+rules.setCompanion(psoo)#link the two rpts
+rules.setCompanion(jdgmts)#link the two rpts
+days.setCompanion(psoo)
+psoo.setCompanion(jdgmts)
 
-tables={"r":rules, "p":props}#handy for selecting an rpt based on user r/p/... switch
+tables={"r":rules, "p":props, "o":psoo, "d":days, "j":jdgmts}#handy for selecting an rpt based on user r/p/... switch
+paths={"r":"rules", "p":"props", "o":"psoo", "d":"days", "j":"jdgmts"}
 
-rules_path=config["sitepath"]+"rules.json"
-props_path=config["sitepath"]+"propositions.json"
-
-try:
-    with open(rules_path,"r") as rules_file:
-        rules.from_dict(json.load(rules_file))
-except:
-    print("Failed to load rules!")
-    
-try:
-    with open(props_path,"r") as props_file:
-        props.from_dict(json.load(props_file))
-except:
-    print("Failed to load propositions!")
+for k in tables:
+    t=tables[k]
+    path=config["sitepath"]+paths[k]+".json"
+    paths[k]=path
+    try:
+        with open(path,"r") as file:
+            t.from_dict(json.load(file))
+    except:
+        print("Failed to load "+paths[k]+"!")
     
 
 
@@ -156,18 +165,12 @@ def cmdExit(args):
 def cmdSave(args):
     for t in tables:#note who saves when!
         tables[t].setAuthorDate(getAuthorDate())
-    try:
-        with open(rules_path,"w") as rules_file:
-            json.dump(rules.to_dict(),rules_file)
-        print(rules_path+" saved.")
-    except:
-        print("Saving "+rules_path+" did not complete successfully!")
-    try:
-        with open(props_path,"w") as props_file:
-            json.dump(props.to_dict(),props_file)
-        print(props_path+" saved.")
-    except:
-        print("Saving "+props_path+" did not complete successfully!")
+        try:
+            with open(paths[t],"w") as file:
+                json.dump(tables[t].to_dict(),file)
+            print(paths[t]+" saved.")
+        except:
+            print("Saving "+paths[t]+" did not complete successfully!")
     return True
 
 def ResolveID(items):

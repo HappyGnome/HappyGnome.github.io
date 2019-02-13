@@ -28,7 +28,7 @@ class rpi_rule(rule_prop_item):
         self.notes=[]
         self.ineffect='1'
         
-        self.linksto={"rules":[], "props":[]}#props, rules etc
+        self.linksto={"rules":[], "props":[], "psoo":[], "jdgmts":[]}#props, rules etc
         
     def dictable_items(self):
         dictables=super().dictable_items()
@@ -49,7 +49,48 @@ class rpi_prop(rule_prop_item):
         dictables=super().dictable_items()
         dictables.extend(["author","text","notes","ineffect"])
         return dictables
+class rpi_day(rule_prop_item):
+    def __init__(self):
+        super().__init__()
+         #new dictables
+        self.points={}##Todo
         
+        #TODO: decide how to link days!
+        self.linksto={"days":[], "psoo":[]}#props, rules etc
+        
+    def dictable_items(self):
+        dictables=super().dictable_items()
+        dictables.extend(["points"])
+        return dictables    
+class rpi_poo(rule_prop_item):
+    def __init__(self):
+        super().__init__()
+         #new dictables
+        self.author=""
+        self.text=[]
+        
+        self.linksto={"psoo":[], "rules":[], "days":[], "jdgmts":[]}#props, rules etc
+        
+    def dictable_items(self):
+        dictables=super().dictable_items()
+        dictables.extend(["author", "text"])
+        return dictables   
+class rpi_jdgmt(rule_prop_item):
+    def __init__(self):
+        super().__init__()
+         #new dictables
+        self.author=""
+        self.text=[]
+        self.notes=[]
+        self.disputed='0'#TODO: make this settable
+        
+        self.linksto={"psoo":[], "rules":[], "jdgmts":[]}#props, rules etc
+        
+    def dictable_items(self):
+        dictables=super().dictable_items()
+        dictables.extend(["author", "text", "notes", "disputed"])
+        return dictables   
+    
 class rpi_rule_converter(rpi_rule):
     def __init__(self):    
         super().__init__()
