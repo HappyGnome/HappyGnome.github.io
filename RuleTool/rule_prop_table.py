@@ -21,7 +21,7 @@ class rule_prop_item(dictable.dictable):
         
 class rpi_rule(rule_prop_item):
     def __init__(self):
-        rule_prop_item.__init__(self)
+        super().__init__()
          #new dictables
         self.text=[]
         self.decorator=""
@@ -31,10 +31,12 @@ class rpi_rule(rule_prop_item):
         self.linksto={"rules":[], "props":[]}#props, rules etc
         
     def dictable_items(self):
-        return rule_prop_item.dictable_items().append["text","decorator","notes","ineffect"]
+        dictables=super().dictable_items()
+        dictables.extend(["text","decorator","notes","ineffect"])
+        return dictables
 class rpi_prop(rule_prop_item):
     def __init__(self):
-        rule_prop_item.__init__(self)
+        super().__init__()
         #new dictables
         self.author=""
         self.text=[]
@@ -44,11 +46,15 @@ class rpi_prop(rule_prop_item):
         #defaults
         self.linksto={"rules":[], "props":[]}#props, rules etc
     def dictable_items(self):
-        return rule_prop_item.dictable_items().append["author","text","notes","ineffect"]
+        dictables=super().dictable_items()
+        dictables.extend(["author","text","notes","ineffect"])
+        return dictables
         
 class rpi_rule_converter(rpi_rule):
+    def __init__(self):    
+        super().__init__()
     def from_dict(self, dct):
-        rpi_rule.__init__(self)
+        
         self.date=dct["date"]
         self.text=dct["text"]
         self.label=dct["label"]
@@ -57,8 +63,9 @@ class rpi_rule_converter(rpi_rule):
         self.linksto["rules"]=dct["linksto"]
         self.linksto["props"]=dct["proplinks"]
 class rpi_prop_converter(rpi_prop):
-    def from_dict(self, dct):
-        rpi_prop.__init__(self)
+    def __init__(self):
+        super().__init__()
+    def from_dict(self, dct):        
         self.author=dct["author"]
         self.date=dct["date"]
         self.text=dct["text"]

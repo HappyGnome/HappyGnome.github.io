@@ -9,7 +9,10 @@ class dictable:
         return[]
     def dictify(self):
         items=self.dictable_items()
-        return {key:getattr(self,key) for key in items}
+        try:
+            return {key:getattr(self,key) for key in items}
+        except:
+            return {}
 #initialize dictable items
 #found in given dictionary
     def un_dictify(self, dct):    
