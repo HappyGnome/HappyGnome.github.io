@@ -9,17 +9,11 @@ import copy
     
 class rule_prop_item(dictable.dictable):
     def __init__(self):
-        self.author=""
         self.date=""
-        self.text={}#main, or {pPO, Judgement}
         self.label=""
-        self.decorator=""
-        self.notes={}
-        self.flags={}#e.g. in effect
         self.linksto={}#props, rules etc
     def dictable_items(self):#return items to add to dictionary
-        return ["author","date","text","label","decorator","notes","flags",
-                "linksto"]
+        return ["date","label", "linksto"]
     def to_dict(self):
         return self.dictify()
     def from_dict(self, dct):
@@ -28,26 +22,38 @@ class rule_prop_item(dictable.dictable):
 class rpi_rule(rule_prop_item):
     def __init__(self):
         rule_prop_item.__init__(self)
-        self.text={"rtext":[]}#main, or {pPO, Judgement}
-        self.notes={"misc":[]}
-        self.flags={"ineffect":0}#e.g. in effect
+         #new dictables
+        self.text=[]
+        self.decorator=""
+        self.notes=[]
+        self.ineffect='1'
+        
         self.linksto={"rules":[], "props":[]}#props, rules etc
+        
+    def dictable_items(self):
+        return rule_prop_item.dictable_items().append["text","decorator","notes","ineffect"]
 class rpi_prop(rule_prop_item):
     def __init__(self):
         rule_prop_item.__init__(self)
-        self.text={"ptext":[]}#main, or {pPO, Judgement}
-        self.notes={"misc":[]}
-        self.flags={"ineffect":0}#e.g. in effect
+        #new dictables
+        self.author=""
+        self.text=[]
+        self.notes=[]
+        self.ineffect='1'
+        
+        #defaults
         self.linksto={"rules":[], "props":[]}#props, rules etc
+    def dictable_items(self):
+        return rule_prop_item.dictable_items().append["author","text","notes","ineffect"]
         
 class rpi_rule_converter(rpi_rule):
     def from_dict(self, dct):
         rpi_rule.__init__(self)
         self.date=dct["date"]
-        self.text["rtext"]=dct["text"]
+        self.text=dct["text"]
         self.label=dct["label"]
-        self.notes["misc"]=dct["notes"]
-        self.flags["ineffect"]=dct["ineffect"]
+        self.notes=dct["notes"]
+        self.ineffect=dct["ineffect"]
         self.linksto["rules"]=dct["linksto"]
         self.linksto["props"]=dct["proplinks"]
 class rpi_prop_converter(rpi_prop):
@@ -55,10 +61,9 @@ class rpi_prop_converter(rpi_prop):
         rpi_prop.__init__(self)
         self.author=dct["author"]
         self.date=dct["date"]
-        self.text["ptext"]=dct["text"]
+        self.text=dct["text"]
         self.label=dct["label"]
-        self.notes["misc"]=dct["notes"]
-        self.flags["ineffect"]=dct["ineffect"]
+        self.notes=dct["notes"]
         self.linksto["rules"]=dct["linksto"]
         self.linksto["props"]=dct["proplinks"]
         
@@ -85,7 +90,12 @@ class rule_prop_table(dictable.dictable):
         
     def getDefaultCopy(self):
         return copy.deepcopy(self.default_item)
-    
+    def setAuthorDate(self, AD):
+        self.author=AD["author"]
+        self.date=AD["date"]
+    def setCompanion(self, other):
+        self.companions[other.type_string]=other
+        other.companions[self.type_string]=self
     def dictable_items(self):
         return ["author","date"]
     def to_dict(self):
@@ -100,10 +110,10 @@ class rule_prop_table(dictable.dictable):
                 rp_item=self.getDefaultCopy()
                 rp_item.from_dict(dct["items"][k])
                 self.__items__[k]=rp_item
-        self.setItemsByLabel()
+        self.updateItemsByLabel()
                 
     #refresh item_ids_by_label. Call this after editing an item's label!
-    def setItemsByLabel(self):
+    def updateItemsByLabel(self):
         self.item_ids_by_label={}
         for a in self.__items__:
             if not self.__items__[a].label in self.item_ids_by_label:
@@ -124,7 +134,13 @@ class rule_prop_table(dictable.dictable):
                  break
             j=j+1
         self.__items__[str(j)]=item
-        self.setItemsByLabel()
+        self.updateItemsByLabel()
+    
+    def addDefaultItem(self,label):
+        #pick ID
+        item=self.default_item()
+        item.label=label
+        self.add(item)
     
     def rmvItem(self, item_id):
         try:
@@ -134,10 +150,14 @@ class rule_prop_table(dictable.dictable):
                     self.breakLink(item_id,l,L)
             
             self.__items__.pop(item_id)
+            self.updateItemsByLabel()
         except KeyError:
             print("Item not found!")
         #TODO: unmake links
     
+    def clear_all(self):
+        for k in self.__items__:
+            self.rmvItem(k)
     '''
     attempt to make a link between self.__items__[item_id]
     and self.companions[linked_item_in].items[linked_id]
