@@ -314,10 +314,12 @@ def cmdSetAuth(args):
     return setString(args,"author")
 def cmdSetDate(args):
     return setString(args,"date")
+def cmdSetDecorator(args):
+    return setString(args,"decorator")
     
 edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, 
                "se":cmdEdit_setInEffect, "sdisp":cmdEdit_setDisputed,
-               "auth":cmdSetAuth, "date":cmdSetDate}
+               "auth":cmdSetAuth, "date":cmdSetDate, "dec":cmdSetDecorator}
 def cmdEdit(args):
     if len(args)<1: return True
     

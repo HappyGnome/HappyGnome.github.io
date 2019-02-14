@@ -5,7 +5,11 @@ function GenerateRuleBox(rules,rule_key,{id_prefix="rule", toggle_notes=true, sh
 	var rule=rules[rule_key];
 	var S="<section class=\"rulebox\" id=\""+id_prefix+rule_key+"\">"+
 			"<div class=\"rulehead\"><h1>"+
-				rule.label+"</h1>";
+				rule.label;
+				if('decorator' in rule && rule.decorator!=""){
+					S+="["+rule.decorator+"]";
+				}
+				S+="</h1>";
 				if(details)S+="<div class=\"detail_link\">[<a href=rule_details.html?"
 		+rule_key+">details</a>]</div>";
 		S+="<div class=\"subhead\">";
