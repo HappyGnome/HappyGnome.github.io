@@ -16,8 +16,15 @@ class rule_prop_item(dictable.dictable):
         return ["date","label", "linksto"]
     def to_dict(self):
         return self.dictify()
-    def from_dict(self, dct):
+    def from_dict(self, dct, extendLinksto=True):
+        oldLinks={}
+        if extendLinksto: oldLinks=copy.deepcopy(self.linksto)
         self.un_dictify(dct)
+        if extendLinksto:
+            for l in oldLinks:
+                if len(self.linksto[l]>0):
+                    self.linksto[l].append(oldLinks[l])
+                else: self.linksto[l]=[]
         
 class rpi_rule(rule_prop_item):
     def __init__(self):
@@ -44,7 +51,7 @@ class rpi_prop(rule_prop_item):
         self.ineffect='1'
         
         #defaults
-        self.linksto={"rules":[], "props":[]}#props, rules etc
+        self.linksto={"rules":[], "props":[], "days":[]}#props, rules etc
     def dictable_items(self):
         dictables=super().dictable_items()
         dictables.extend(["author","text","notes","ineffect"])
@@ -56,7 +63,7 @@ class rpi_day(rule_prop_item):
         self.points={}##Todo
         
         #TODO: decide how to link days!
-        self.linksto={"days":[], "psoo":[]}#props, rules etc
+        self.linksto={"days":[], "psoo":[], "props":[]}#props, rules etc
         
     def dictable_items(self):
         dictables=super().dictable_items()
@@ -214,7 +221,7 @@ class rule_prop_table(dictable.dictable):
     def makeLink(self, item_id, linked_id, linked_item_in):
         try:
             item_here=self.__items__[item_id]
-            rpt=self.companions[linked_item_in]
+            rpt=self.companions[linked_item_in]            
             linksback=rpt.__items__[linked_id].linksto[self.type_string]
             if not item_id in linksback:
                 linksback.append(item_id)

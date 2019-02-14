@@ -55,6 +55,7 @@ rules.setCompanion(props)#link the two rpts
 rules.setCompanion(psoo)#link the two rpts
 rules.setCompanion(jdgmts)#link the two rpts
 days.setCompanion(psoo)
+days.setCompanion(props)
 psoo.setCompanion(jdgmts)
 
 tables={"r":rules, "p":props, "o":psoo, "d":days, "j":jdgmts}#handy for selecting an rpt based on user r/p/... switch
@@ -137,7 +138,7 @@ def previewText(text):#open text editor and let user edit text, return edited ve
 #or return None
     
 def toRulesLabel(strings):
-    if len(strings)<2 or not (strings[0]=="r" or strings[0]=="p"):
+    if len(strings)<2 or not (strings[0] in tables):
         return None
     ind=2
     st=strings[1]
@@ -297,9 +298,25 @@ def cmdEdit_setInEffect(args):
     return setFlag(args,"ineffect")
 def cmdEdit_setDisputed(args): 
     return setFlag(args,"disputed")
+
+#convert first arg into attribute with given name, if it exists
+def setString(args, atr):
+    if not selected_obj: return True
+    ie=getattr(selected_obj,atr, None)
+    if ie==None: return True
+    
+    if len(args)<1: return True
+    
+    setattr(selected_obj,atr,args[0])      
+    return True
+def cmdSetAuth(args):
+    return setString(args,"author")
+def cmdSetDate(args):
+    return setString(args,"date")
     
 edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, 
-               "se":cmdEdit_setInEffect, "sd":cmdEdit_setDisputed}
+               "se":cmdEdit_setInEffect, "sdisp":cmdEdit_setDisputed,
+               "auth":cmdSetAuth, "date":cmdSetDate}
 def cmdEdit(args):
     if len(args)<1: return True
     
