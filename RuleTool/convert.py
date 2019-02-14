@@ -26,8 +26,8 @@ with open(props_path,"r") as props_file:
     
 
 
-with open("../docs/rules_n.json","w") as rules_file:
+with open("../docs/rules.json","w") as rules_file:
     json.dump(rules.to_dict(),rules_file)
 
-with open("../docs/props_n.json","w") as props_file:
+with open("../docs/props.json","w") as props_file:
     json.dump(props.to_dict(),props_file)
