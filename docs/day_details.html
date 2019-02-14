@@ -34,7 +34,8 @@
 							
 							for (var i=0; i<day.linksto["props"].length; i++){		
 								var prop=props.items[day.linksto["props"][i]];			
-								$("#prop_list").append(GenerateRuleBox(props.items, day.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+								if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, day.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+								else $("#prop_list_repealed").append(GenerateRuleBox(props.items, day.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
 							}
 							
 						}).fail(function(){
@@ -89,6 +90,8 @@
 	</div>
 	<h2 class="repealed_heading">Propositions</h2>
 	<div class="rules_list" id="prop_list">
+	</div>
+	<div class="rules_list_repealed" id="prop_list_repealed">
 	</div>
 	<h2 class="repealed_heading">Points of Order</h2>
 	<div class="rules_list" id="po_list">

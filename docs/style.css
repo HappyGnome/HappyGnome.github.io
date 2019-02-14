@@ -163,7 +163,7 @@ Rulebox_repealed####################################################
 	font-size: 17pt;
 }
 
-.rules_list_repealed .rulebox{
+.rules_list_repealed .rulebox, .rulebox_repealed{
 	color:#444444;
 	border: 1px solid #444444;
 	background-color:#dddddd;	
@@ -172,7 +172,7 @@ Rulebox_repealed####################################################
 .rules_list_repealed  .rulebox .subhead{
 	color:#666666;	
 }
-.rules_list_repealed  .rulebox .rulehead {
+.rules_list_repealed  .rulebox .rulehead{
 	background-color:#eeeeee;
 }
 .rules_list_repealed  .rulebox .rulefooter{
