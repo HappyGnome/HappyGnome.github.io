@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>The Days</title>
+	<meta name="author" content="HappyGnome">
+	<link rel="stylesheet" href="style.css">
+	<script src="jquery-3.3.1.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<script type="application/javascript" src="GenerateRuleBox.js"></script>
+	<script type="application/javascript">
+		//TODO: sort rules, search.
+		$(document).ready(function(){
+			$.ajax({url:"days.json", type:"GET", dataType:"json"})
+			.done(function(days){
+				for (var i in days.items){	
+					var day=days.items[i];	
+					S="<div class=\"daybox\">"
+					S+="<a href=\"day_details.html?"+i+"\">"+day.label+"</a>"
+					S+="</div>"
+					$("#days_list").append(S);
+				}
+				//refresh hash:
+				var hash=location.hash;
+				location.hash="";
+				location.hash=hash;
+			})
+			.fail(function(){
+				alert("Oops! Retrieval of rules data failed.");
+				<!--TODO-->
+			});	
+		});
+	</script>
+	
+	<div class="page_head">
+		<h1 id="title">The Days</h1><h2 id="title_annot"></h2>
+	</div>
+	<div class="days_list" id="days_list">
+	</div>
+</body>
+</html>

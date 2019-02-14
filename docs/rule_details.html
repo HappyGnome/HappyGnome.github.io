@@ -16,20 +16,20 @@
 				var ruleID=parseInt(ruleIDstr);
 				$.ajax({url:"rules.json", type:"GET", dataType:"json"})
 				.done(function(rules){
-					if (ruleID<0 || ruleID>=rules.rules.length){
+					if (!(ruleID in rules.items)){
 						$("#title").text("Rule Not Found!");
 						return;
 					}
-					var rule=rules.rules[ruleID];
+					var rule=rules.items[ruleID];
 					$("#title").text("Rule "+rule.label+ " Details");
 					
 					//load propositions while we render the rule##############################
-					$.ajax({url:"propositions.json", type:"GET", dataType:"json"})
+					$.ajax({url:"props.json", type:"GET", dataType:"json"})
 					.done(function(props){
-						for (var i=0; i<rule.proplinks.length; i++){		
-							var prop=props.propositions[rule.proplinks[i]];			
-							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.propositions, rule.proplinks[i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.rules,details:false, show_author:true}));
-							else $("#prop_list_repealed").append(GenerateRuleBox(props.propositions,rule.proplinks[i], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.rules,details:false, show_author:true}))
+						for (var i=0; i<rule.linksto["props"].length; i++){		
+							var prop=props.items[rule.linksto["props"][i]];			
+							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, rule.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+							else $("#prop_list_repealed").append(GenerateRuleBox(props.items,rule.linksto["props"][i], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}))
 						}
 					})
 					.fail(function(){
@@ -38,8 +38,8 @@
 					});
 					
 					//Back to the rule!#################################################
-					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.rules,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}));
-					else $("#rules_list_repealed").append(GenerateRuleBox(rules.rules,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}))
+					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}));
+					else $("#rules_list_repealed").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}))
 				})
 				.fail(function(){
 					alert("Oops! Retrieval of rules data failed.");
