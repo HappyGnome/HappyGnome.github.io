@@ -22,9 +22,9 @@ class rule_prop_item(dictable.dictable):
         self.un_dictify(dct)
         if extendLinksto:
             for l in oldLinks:
-                if len(self.linksto[l]>0):
-                    self.linksto[l].append(oldLinks[l])
-                else: self.linksto[l]=[]
+                if len(self.linksto[l])>0:
+                    self.linksto[l].extend(oldLinks[l])
+                else: self.linksto[l]=oldLinks[l]
         
 class rpi_rule(rule_prop_item):
     def __init__(self):

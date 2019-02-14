@@ -8,7 +8,7 @@ function GeneratePOBox(psoo,po_key, jdgmts,{id_prefix="po", toggle_jdgmts=true, 
 				po.label+"</h1>";
 		S+="<div class=\"subhead\">";
 		S+=" - "+po.author+" - ";		
-		S+=jdgmt.date+"</div></div><div class=\"pobody\" ";
+		S+=po.date+"</div></div><div class=\"pobody\" ";
 		if(toggle_jdgmts) S+="onclick=\"TogglePOjdgmts('"+id_prefix+po_key+"')\"";
 		S+=">";
 		for (var i=0; i<po.text.length; i++)
@@ -36,9 +36,9 @@ function GeneratePOBox(psoo,po_key, jdgmts,{id_prefix="po", toggle_jdgmts=true, 
 		S+=">";
 		
 		//judgements
-		for (var j=0;j<po.linksto["jdgmts"].length-1; j++){
+		for (var j=0;j<po.linksto["jdgmts"].length; j++){
 			var jdgmtID=po.linksto["jdgmts"][j]
-			S+=GenerateJdgmtBox(jdgmts,jdgmtID,{rule_lookup_url:rule_lookup_url, rule_name_lookup:rule_name_lookup})
+			S+=GenerateJdgmtBox(jdgmts,jdgmtID,{rule_lookup_url:rule_lookup_url, rule_name_lookup:rule_name_lookup})		
 			
 		}
 		S+="</div>";//jdgmt_list

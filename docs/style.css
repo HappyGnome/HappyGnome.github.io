@@ -148,7 +148,7 @@ PObox####################################################
 .pobox{
 	color:#000000;
 	border: 2px solid black;
-	border-radius: 20px;	
+	border-radius: 0px;	
 	width: 90vw;
 	font-size: 10pt;
 	max-width: 60em;
@@ -218,10 +218,8 @@ jdgmtbox####################################################
 	text-align: left;
 	font-size: 10pt;
 	background-color:#eeeeee;
-	border-radius: 0px 0px 20px 20px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	padding: 10px;
 }
 .jdgmtbox .footer .cf{
 	font-size: 10pt;
