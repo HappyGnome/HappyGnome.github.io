@@ -181,6 +181,7 @@ class rule_prop_table(dictable.dictable):
     def getItemsByLabel(self,label):
         return {k:self.__items__[k] for k in self.item_ids_by_label.get(label,[])}
     
+    #returns id of newly added item
     def addItem(self, item):
         #pick ID
         j=len(self.__items__)
@@ -190,12 +191,13 @@ class rule_prop_table(dictable.dictable):
             j=j+1
         self.__items__[str(j)]=item
         self.updateItemsByLabel()
+        return str(j)
     
     def addDefaultItem(self,label):
         #pick ID
         item=self.getDefaultCopy()
         item.label=label
-        self.addItem(item)
+        return self.addItem(item)
     
     def rmvItem(self, item_id):
         try:

@@ -83,6 +83,7 @@ sel_mode="r"#"p" or "r" for proposition or rule
 selected_id=""
 selected_obj=None
 
+date_of_new_items=""
 
 def editText(text):#open text editor and let user edit text, return edited version
     try:
@@ -338,7 +339,12 @@ def cmdAdd(args):
     label_data=toRulesLabel(args)
     if not label_data: return True
     
-    tables[label_data[0]].addDefaultItem(label_data[1])      
+    item=tables[label_data[0]].getDefaultCopy();
+    item.label=label_data[1]
+    item.date=date_of_new_items
+    
+    tables[label_data[0]].addItem(item)   
+    
     return True
 
 def cmdClear(args):
@@ -354,6 +360,12 @@ def cmdClear(args):
         tables[k].clear_all()
     
     return True
+
+def cmdSetAddDate(args):
+    global date_of_new_items
+    if len(args)<1: return True
+    date_of_new_items=args[0]
+    return True
 '''
 ************************************************************
 Main CLI cmd parser
@@ -362,7 +374,7 @@ return False to terminate main loop
 '''
 handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel, 
           "edit":cmdEdit, "add":cmdAdd, "link":cmdLink, 
-          "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm}# "del":cmdDel, ""}#define handlers
+          "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm, "date":cmdSetAddDate}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks
