@@ -25,10 +25,11 @@ nav .navinner .navlink{
 	text-decoration: none;
 	background-color: #eeeeee;
 	color:#000000;
-	border-width: 2px;
+	border-width: 1px;
 	border-color: black;
 	border-style: none solid solid solid;
 	border-radius: 0px 0px 5px 5px;
+	font-size: 12pt;
 	padding-left:auto;
 	padding-right:auto;
 	flex:1;

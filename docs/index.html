@@ -31,23 +31,14 @@
 			});	
 		});
 	</script>
-	<script type="application/javascript">
-		var prev_scroll=0;
-		$(window).scroll(function(){
-			var new_scroll=$('html, body').scrollTop();
-			if (new_scroll<window.prev_scroll) $("nav").css("top","0px");
-			else $("nav").css("top","-30px");
-			window.prev_scroll=new_scroll;
-		});
-	</script>
+	<script src="navhide.js" type="application/javascript"></script>
 </head>
 <body>
 
 	<nav>
 		<div class="navinner">
-			<a class="navlink_s navlink" href="index.html">RULES</a>
-			<a class="navlink" href="rule_details.html">1</a>
-			<a class="navlink" href="propositions.html">2</a>
+			<a class="navlink_s navlink" href="index.html">Rules</a>
+			<a class="navlink" href="days.html">Days</a>
 		</div>
 	</nav>
 	<div class="page_head">
