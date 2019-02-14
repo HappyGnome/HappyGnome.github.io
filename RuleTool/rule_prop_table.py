@@ -62,7 +62,7 @@ class rpi_day(rule_prop_item):
         dictables=super().dictable_items()
         dictables.extend(["points"])
         return dictables    
-class rpi_poo(rule_prop_item):
+class rpi_po(rule_prop_item):
     def __init__(self):
         super().__init__()
          #new dictables

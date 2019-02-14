@@ -49,14 +49,14 @@ Rulebox####################################################
 @media screen and (min-width: 600px){
 	.rules_list{align-items: flex-start;}
 }
-.rulebox h1{
+.rulebox h1, .pobox h1{
 	font-size: 15pt;
 	margin: 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	font-family: serif;
 }
-.rulebox .subhead{
+.rulebox .subhead, .pobox .subhead{
 	color:#666666;
 	font-size: 10pt;
 	margin: 0 10px 10px 10px;
@@ -78,7 +78,7 @@ Rulebox####################################################
 	font-size: 10pt;
 	color:#666666;
 }
-.rulebox .rulebody {
+.rulebox .rulebody, .pobox .pobody {
 	text-align: left;
 	font-size: 12pt;
 	margin: 10px;
@@ -95,7 +95,7 @@ Rulebox####################################################
 	text-overflow: ellipsis;
 	padding: 10px;
 }
-.rulebox .rulefooter .cf{
+.rulebox .rulefooter .cf, .pobox  .cf{
 	font-size: 10pt;
 }
 .rulebox .rulefooter .footnote{
@@ -140,4 +140,111 @@ Rulebox_repealed####################################################
 }
 .rules_list_repealed  .rulebox .rulefooter .footnote{
 	color:#888888;
+}
+
+/*
+PObox####################################################
+*/
+.pobox{
+	color:#000000;
+	border: 2px solid black;
+	border-radius: 20px;	
+	width: 90vw;
+	font-size: 10pt;
+	max-width: 60em;
+	margin:5px;	
+	
+}
+
+.pobox .pohead {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: baseline;
+	background-color:#eeeeee;
+	border-radius: 0px 0px 0 0;
+	overflow: hidden;
+}
+.pobox .footer{
+	background-color:#eeeeee;
+	border-radius: 0px 0px 0 0;
+	overflow: hidden;
+}
+.pobox .jdgmt_list{}
+
+/*
+jdgmtbox####################################################
+*/
+.jdgmtbox{
+	color:#000000;
+	font-size: 10pt;
+	max-width: 60em;
+	margin:5px;	
+	
+}
+.jdgmtbox h1{
+	font-size: 12pt;
+	margin: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-family: serif;
+}
+.jdgmtbox .subhead{
+	color:#666666;
+	font-size: 8pt;
+	margin: 0 10px 10px 10px;
+	font-style: italic;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	
+}
+.jdgmtbox .jdgmthead {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: baseline;
+	border-radius: 0px;
+	overflow: hidden;
+}
+.jdgmtbox .jdgmtbody{
+	text-align: left;
+	font-size: 8pt;
+	margin: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-family: serif;
+}
+.jdgmtbox .footer{
+	text-align: left;
+	font-size: 10pt;
+	background-color:#eeeeee;
+	border-radius: 0px 0px 20px 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 10px;
+}
+.jdgmtbox .footer .cf{
+	font-size: 10pt;
+}
+.jdgmtbox .footer .footnote{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-top: 5px;
+	color:#888888;
+}
+.jdgmtbox .footer .footnote .attrib{
+	font-size: 8pt;
+	font-style: italic;
+}
+.jdgmtbox .footer ul{
+	padding: 0px;
+	margin:0px;
+	list-style-type: circle;
+	
+}
+/*
+disputed jdgmtbox####################################################
+*/
+.jdgmtdisp .jdgmtbody{
+	color:#ff0000;
 }

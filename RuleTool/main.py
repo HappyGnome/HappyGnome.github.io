@@ -40,7 +40,7 @@ days=rpt.rule_prop_table("days")
 days.default_item=rpt.rpi_day()
 
 psoo=rpt.rule_prop_table("psoo")
-psoo.default_item=rpt.rpi_poo()
+psoo.default_item=rpt.rpi_po()
 
 jdgmts=rpt.rule_prop_table("jdgmts")
 jdgmts.default_item=rpt.rpi_jdgmt()
@@ -279,22 +279,27 @@ def cmdEdit_addnote(args):
     notes.insert(0,note)
     return True
 
-def cmdEdit_setInEffect(args):
+#flag is the name of a '0'/'1' string boolean attribute
+def setFlag(args, flag):
     if not selected_obj: return True
-    ie=getattr(selected_obj,"ineffect", None)
+    ie=getattr(selected_obj,flag, None)
     if ie==None: return True
     
     if len(args)<1: return True
     
     if args[0] in ["Y","y"]:
-        selected_obj.ineffect='1'
+        setattr(selected_obj,flag,'1')
     else:
-        selected_obj.ineffect='0'
-        
+        setattr(selected_obj,flag,'0')      
     return True
+
+def cmdEdit_setInEffect(args): 
+    return setFlag(args,"ineffect")
+def cmdEdit_setDisputed(args): 
+    return setFlag(args,"disputed")
     
 edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, 
-               "se":cmdEdit_setInEffect}
+               "se":cmdEdit_setInEffect, "sd":cmdEdit_setDisputed}
 def cmdEdit(args):
     if len(args)<1: return True
     

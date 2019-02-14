@@ -17,7 +17,7 @@
 				var ruleID=parseInt(ruleIDstr);
 				$.ajax({url:"rules.json", type:"GET", dataType:"json"})
 				.done(function(rules){
-					if (ruleID<0 || ruleID>=rules.items.length){
+					if (!(ruleID in rules.items)){
 						$("#title").text("Rule Not Found!");
 						return;
 					}

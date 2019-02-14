@@ -9,41 +9,68 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+	<script type="application/javascript" src="GenerateJdgmtBox.js"></script>
+	<script type="application/javascript" src="GeneratePOBox.js"></script>
 	<script type="application/javascript" src="GenerateRuleBox.js"></script>
 	<script type="application/javascript">
 		$(document).ready(function(){	
-			var ruleIDstr=/[0-9]+/.exec(location.search);	
-			if(ruleIDstr){
-				var ruleID=parseInt(ruleIDstr);
-				$.ajax({url:"rules.json", type:"GET", dataType:"json"})
-				.done(function(rules){
-					if (ruleID<0 || ruleID>=rules.items.length){
-						$("#title").text("Rule Not Found!");
-						return;
-					}
-					var rule=rules.items[ruleID];
-					$("#title").text("Rule "+rule.label+ " Details");
-					
-					//load propositions while we render the rule##############################
-					$.ajax({url:"props.json", type:"GET", dataType:"json"})
-					.done(function(props){
-						for (var i=0; i<rule.linksto["props"].length; i++){		
-							var prop=props.items[rule.linksto["props"][i]];			
-							if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, rule.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
-							else $("#prop_list_repealed").append(GenerateRuleBox(props.items,rule.linksto["props"][i], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}))
+			var dayIDstr=/[0-9]+/.exec(location.search);	
+			if(dayIDstr){
+				var dayID=parseInt(dayIDstr);
+				$.ajax({url:"days.json", type:"GET", dataType:"json"})
+				.done(function(days){
+					$.ajax({url:"rules.json", type:"GET", dataType:"json"})
+					.done(function(rules){
+						if (!(dayID in days.items)){
+							$("#title").text("Day Not Found!");
+							return;
 						}
-					})
-					.fail(function(){
+						var day=days.items[dayID];
+						$("#title").text("Day "+day.label+ " Details");
+						
+						//load propositions while we render the psoo##############################
+						$.ajax({url:"props.json", type:"GET", dataType:"json"})
+						.done(function(props){
+							
+							for (var i=0; i<day.linksto["props"].length; i++){		
+								var prop=props.items[rule.linksto["props"][i]];			
+								$("#prop_list").append(GenerateRuleBox(props.items, day.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+							}
+							
+						}).fail(function(){
+							alert("Oops! Retrieval of proposition data failed.");
+							<!--TODO-->
+						});
+						
+						//Load psoo and judgements
+						$.ajax({url:"psoo.json", type:"GET", dataType:"json"})
+						.done(function(psoo){
+							
+							$.ajax({url:"jdgmts.json", type:"GET", dataType:"json"})
+							.done(function(jdgmts){
+							
+								for (var i=0; i<day.linksto["psoo"].length; i++){		
+									var po_key=day.linksto["psoo"][i];			
+									$("#po_list").append(GeneratePOBox(psoo.items, po_key, jdgmts,{rule_lookup_url:"index.html",rule_name_lookup:rules.items}));
+								}
+							
+							}).fail(function(){
+								alert("Oops! Retrieval of judgements data failed.");
+								<!--TODO-->
+							});
+							
+						}).fail(function(){
+							alert("Oops! Retrieval of points of order data failed.");
+							<!--TODO-->
+						});
+						
+					}).fail(function(){
 						alert("Oops! Retrieval of rules data failed.");
-						<!--TODO-->
-					});
-					
-					//Back to the rule!#################################################
-					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}));
-					else $("#rules_list_repealed").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}))
+						<!--TODO-->	
+						});
 				})
 				.fail(function(){
-					alert("Oops! Retrieval of rules data failed.");
+					alert("Oops! Retrieval of days data failed.");
 					<!--TODO-->
 				});	
 			}
@@ -51,17 +78,14 @@
 	</script>
 	
 	<div class="page_head">
-		<h1 id="title">Rule Details</h1><h2 id="title_annot"></h2>
+		<h1 id="title">Day Details</h1><h2 id="title_annot"></h2>
 	</div>
-	<div class="rules_list" id="rules_list">
+	<h2 class="repealed_heading">Propositions</h2>
+	<div class="prop_list" id="prop_list">
 	</div>
-	<div class="rules_list rules_list_repealed" id="rules_list_repealed">
+	<h2 class="repealed_heading">Points of Order</h2>
+	<div class="po_list" id="po_list">
 	</div>
-	<h2 class="repealed_heading">Related Propositions (enacted):</h2>
-	<div class="rules_list" id="prop_list">
-	</div>
-	<h2 class="repealed_heading">Related Propositions (not enacted):</h2>
-	<div class="rules_list rules_list_repealed" id="prop_list_repealed">
-	</div>
+	
 </body>
 </html>

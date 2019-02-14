@@ -3,8 +3,8 @@
 import rule_prop_table as rpt
 import json
 
-rules_path="rules_old.json"
-props_path="propositions_old.json"
+rules_path="../docs/rules.json"
+props_path="../docs/propositions.json"
 
 rules=rpt.rule_prop_table("rules")
 rules.default_item=rpt.rpi_rule_converter()
@@ -22,8 +22,8 @@ with open(props_path,"r") as props_file:
     
 
 
-with open("rules_new.json","w") as rules_file:
+with open(rules_path,"w") as rules_file:
     json.dump(rules.to_dict(),rules_file)
 
-with open("props_new.json","w") as props_file:
+with open("../docs/props.json","w") as props_file:
     json.dump(props.to_dict(),props_file)
