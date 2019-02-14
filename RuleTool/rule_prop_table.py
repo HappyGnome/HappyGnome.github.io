@@ -94,8 +94,7 @@ class rpi_jdgmt(rule_prop_item):
 class rpi_rule_converter(rpi_rule):
     def __init__(self):    
         super().__init__()
-    def from_dict(self, dct):
-        
+    def from_dict(self, dct):        
         self.date=dct["date"]
         self.text=dct["text"]
         self.label=dct["label"]
@@ -112,6 +111,7 @@ class rpi_prop_converter(rpi_prop):
         self.text=dct["text"]
         self.label=dct["label"]
         self.notes=dct["notes"]
+        self.ineffect=dct["ineffect"]
         self.linksto["rules"]=dct["linksto"]
         self.linksto["props"]=dct["proplinks"]
         
