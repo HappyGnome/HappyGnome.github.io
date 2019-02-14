@@ -7,7 +7,8 @@
 	<link rel="stylesheet" href="style.css">
 	<script src="jquery-3.3.1.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+</head>
+<body>
 	<script type="application/javascript" src="GenerateRuleBox.js"></script>
 	<script type="application/javascript">
 		//TODO: sort rules, search.
@@ -17,7 +18,7 @@
 				for (var i in days.items){	
 					var day=days.items[i];	
 					S="<div class=\"daybox\">"
-					S+="<a href=\"day_details.html?"+i+"\">"+day.label+"</a>"
+					S+="<a href=\"day_details.html?"+i+"\">"+day.label+" - "+day.date+"</a>"
 					S+="</div>"
 					$("#days_list").append(S);
 				}
@@ -34,14 +35,13 @@
 	</script>
 	
 	<script src="navhide.js" type="application/javascript"></script>
-</head>
-<body>
 	<nav>
 		<div class="navinner">
 			<a class="navlink" href="index.html">Rules</a>
 			<a class="navlink_s navlink" href="days.html">Days</a>
 		</div>
 	</nav>
+	<div class="navspacer"></div>
 	<div class="page_head">
 		<h1 id="title">The Days</h1><h2 id="title_annot"></h2>
 	</div>
