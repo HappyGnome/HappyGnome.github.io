@@ -9,74 +9,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>	
-		<script type="application/javascript" src="GenerateJdgmtBox.js"></script>
+	<script type="application/javascript" src="GenerateJdgmtBox.js"></script>
 	<script type="application/javascript" src="GeneratePOBox.js"></script>
 	<script type="application/javascript" src="GenerateRuleBox.js"></script>
-	<script type="application/javascript">
-		$(document).ready(function(){	
-			var dayIDstr=/[0-9]+/.exec(location.search);	
-			if(dayIDstr){
-				var dayID=parseInt(dayIDstr);
-				$.ajax({url:"days.json", type:"GET", dataType:"json"})
-				.done(function(days){
-					$.ajax({url:"rules.json", type:"GET", dataType:"json"})
-					.done(function(rules){
-						if (!(dayID in days.items)){
-							$("#title").text("Day Not Found!");
-							return;
-						}
-						var day=days.items[dayID];
-						$("#title").text("Day "+day.label+ " Details");
-						
-						//load propositions while we render the psoo##############################
-						$.ajax({url:"props.json", type:"GET", dataType:"json"})
-						.done(function(props){
-							
-							for (var i=0; i<day.linksto["props"].length; i++){		
-								var prop=props.items[day.linksto["props"][i]];			
-								if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, day.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
-								else $("#prop_list_repealed").append(GenerateRuleBox(props.items, day.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
-							}
-							
-						}).fail(function(){
-							alert("Oops! Retrieval of proposition data failed.");
-							<!--TODO-->
-						});
-						
-						//Load psoo and judgements
-						$.ajax({url:"psoo.json", type:"GET", dataType:"json"})
-						.done(function(psoo){
-							
-							$.ajax({url:"jdgmts.json", type:"GET", dataType:"json"})
-							.done(function(jdgmts){
-							
-								for (var i=0; i<day.linksto["psoo"].length; i++){		
-									var po_key=day.linksto["psoo"][i];			
-									$("#po_list").append(GeneratePOBox(psoo.items, po_key, jdgmts.items,{rule_lookup_url:"index.html",rule_name_lookup:rules.items}));
-								}
-							
-							}).fail(function(){
-								alert("Oops! Retrieval of judgements data failed.");
-								<!--TODO-->
-							});
-							
-						}).fail(function(){
-							alert("Oops! Retrieval of points of order data failed.");
-							<!--TODO-->
-						});
-						
-					}).fail(function(){
-						alert("Oops! Retrieval of rules data failed.");
-						<!--TODO-->	
-						});
-				})
-				.fail(function(){
-					alert("Oops! Retrieval of days data failed.");
-					<!--TODO-->
-				});	
-			}
-		});
-	</script>
+	<script type="application/javascript" src="LoadDayDetails.js"></script>
 	<script src="navhide.js" type="application/javascript"></script>
 	<nav>
 		<div class="navinner">
@@ -84,6 +20,9 @@
 			<a class="navlink" href="days.html">Days</a>
 		</div>
 	</nav>
+	<noscript>
+		<div class="noscript_banner"><h1>This page may not load correctly with Javascript disabled!</h1></div>
+	</noscript>
 	<div class="navspacer"></div>
 	<div class="page_head">
 		<h1 id="title">Day Details</h1><h2 id="title_annot"></h2>

@@ -5,6 +5,26 @@ html{
 	font-family: sans-serif;
 }
 /*
+Noscript####################################################
+*/
+.noscript_banner{
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	bottom: 0px;
+	left: 0px;
+	width:100vw;
+	min-height:30px;
+	background-color: rgba(0,0,0,0.7);
+}
+.noscript_banner h1{
+	color:#eeeeee;
+	display:block;
+	text-align:center;
+	font-size:20pt;
+}
+/*
 nav####################################################
 */
 nav{

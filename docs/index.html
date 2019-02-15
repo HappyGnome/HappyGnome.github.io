@@ -8,39 +8,23 @@
 	<script src="jquery-3.3.1.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
+	<script type="application/javascript" src="GenerateRuleBox.js"></script>
+	<script type="application/javascript" src="LoadRuleList.js"></script>
 
 </head>
 <body>
-	<script type="application/javascript" src="GenerateRuleBox.js"></script>
-	<script type="application/javascript">
-		//TODO: sort rules, search.
-		$(document).ready(function(){
-			$.ajax({url:"rules.json", type:"GET", dataType:"json"})
-			.done(function(rules){
-				$("#title_annot").text("updated: " + rules.date +" by "+ rules.author);
-				for (var i in rules.items){		
-					var rule=rules.items[i];			
-					if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items, i));
-					else $("#rules_list_repealed").append(GenerateRuleBox(rules.items,i))
-				}
-				//refresh hash:
-				//var hash=location.hash;
-				//location.hash="";
-				//location.hash=hash;
-			})
-			.fail(function(){
-				alert("Oops! Retrieval of rules data failed.");
-				<!--TODO-->
-			});	
-		});
-	</script>
+	
 	<script src="navhide.js" type="application/javascript"></script>
+
 	<nav>
 		<div class="navinner">
 			<a class="navlink navlink_s" href="index.html">Rules</a>
 			<a class="navlink" href="days.html">Days</a>
 		</div>
 	</nav>
+	<noscript>
+		<div class="noscript_banner"><h1>This page may not load correctly with Javascript disabled!</h1></div>
+	</noscript>
 	<div class="navspacer"></div>
 	<div class="page_head">
 		<h1 id="title">The Rules</h1><h2 id="title_annot"></h2>

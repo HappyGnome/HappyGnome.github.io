@@ -10,29 +10,7 @@
 </head>
 <body>
 	<script type="application/javascript" src="GenerateRuleBox.js"></script>
-	<script type="application/javascript">
-		//TODO: sort rules, search.
-		$(document).ready(function(){
-			$.ajax({url:"days.json", type:"GET", dataType:"json"})
-			.done(function(days){
-				for (var i in days.items){	
-					var day=days.items[i];	
-					S="<div class=\"daybox\">"
-					S+="<a href=\"day_details.html?"+i+"\">"+day.label+" - "+day.date+"</a>"
-					S+="</div>"
-					$("#days_list").append(S);
-				}
-				//refresh hash:
-				var hash=location.hash;
-				location.hash="";
-				location.hash=hash;
-			})
-			.fail(function(){
-				alert("Oops! Retrieval of rules data failed.");
-				<!--TODO-->
-			});	
-		});
-	</script>
+	<script type="application/javascript" src="LoadDayList.js"></script>
 	
 	<script src="navhide.js" type="application/javascript"></script>
 	<nav>
@@ -41,6 +19,9 @@
 			<a class="navlink_s navlink" href="days.html">Days</a>
 		</div>
 	</nav>
+	<noscript>
+		<div class="noscript_banner"><h1>This page may not load correctly with Javascript disabled!</h1></div>
+	</noscript>
 	<div class="navspacer"></div>
 	<div class="page_head">
 		<h1 id="title">The Days</h1><h2 id="title_annot"></h2>
