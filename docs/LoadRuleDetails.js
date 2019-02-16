@@ -19,10 +19,23 @@ $(document).ready(function(){
 			else $("#rules_list_repealed").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}))
 			
 			//load propositions##############################
+			var bRepealedProps=false, bProps=false;
 			for (var i=0; i<rule.linksto["props"].length; i++){		
 				var prop=props.items[rule.linksto["props"][i]];			
-				if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, rule.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
-				else $("#prop_list_repealed").append(GenerateRuleBox(props.items,rule.linksto["props"][i], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}))
+				if(prop.ineffect=="1") {
+					bProps=true;
+					$("#prop_list").append(GenerateRuleBox(props.items, rule.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+				}
+				else {
+					bRepealedProps=true;
+					$("#prop_list_repealed").append(GenerateRuleBox(props.items,rule.linksto["props"][i], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+				}
+			}
+			if(bProps){
+				$('#props_section').show();
+			}
+			if(bRepealedProps){
+				$('#repealed_props_section').show();
 			}
 			
 			
