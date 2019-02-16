@@ -3,7 +3,7 @@ $(document).ready(function(){
 	.done(function(rules){
 		$("#title_annot").text("updated: " + rules.date +" by "+ rules.author);
 		//sort items ids by label
-		sortedIds=[];
+		var sortedIds=[];
 		for (var i in rules.items){
 			sortedIds.push(i);
 		}

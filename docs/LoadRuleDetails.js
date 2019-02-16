@@ -20,15 +20,24 @@ $(document).ready(function(){
 			
 			//load propositions##############################
 			var bRepealedProps=false, bProps=false;
-			for (var i=0; i<rule.linksto["props"].length; i++){		
-				var prop=props.items[rule.linksto["props"][i]];			
+			
+			//sort items ids by label
+			var sortedIds=[];
+			for (var i=0; i<rule.linksto["props"].length; i++){
+				sortedIds.push(rule.linksto["props"][i]);
+			}
+			sortedIds.sort(function(a,b){
+				return props.items[b].date.localeCompare(props.items[a].date)});
+			
+			for (var l=0; l<sortedIds.length; l++){		
+				var prop=props.items[sortedIds[l]];			
 				if(prop.ineffect=="1") {
 					bProps=true;
-					$("#prop_list").append(GenerateRuleBox(props.items, rule.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+					$("#prop_list").append(GenerateRuleBox(props.items, sortedIds[l],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
 				}
 				else {
 					bRepealedProps=true;
-					$("#prop_list_repealed").append(GenerateRuleBox(props.items,rule.linksto["props"][i], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+					$("#prop_list_repealed").append(GenerateRuleBox(props.items,sortedIds[l], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
 				}
 			}
 			if(bProps){

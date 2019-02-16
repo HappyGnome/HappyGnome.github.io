@@ -21,19 +21,30 @@ $(document).ready(function(){
 			}
 			var day=days.items[dayID];
 			$("#title").text("Day "+day.label+ " Details");
+			
+			var sortedIds=[];
+			for (var i=0; i<day.linksto["props"].length; i++){
+				sortedIds.push(day.linksto["props"][i]);
+			}
+			sortedIds.sort(function(a,b){
+				return props.items[a].label.localeCompare(props.items[b].label)});
 				
 			//load propositions##############################	
-			for (var i=0; i<day.linksto["props"].length; i++){		
-				var prop=props.items[day.linksto["props"][i]];			
-				if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, day.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
-				else $("#prop_list_repealed").append(GenerateRuleBox(props.items, day.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+			for (var l=0; l<sortedIds.length; l++){		
+				var prop=props.items[sortedIds[l]];			
+				if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, sortedIds[l],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+				else $("#prop_list_repealed").append(GenerateRuleBox(props.items, sortedIds[l],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
 			}
 				
-				
+			var sortedIds=[];
+			for (var i=0; i<day.linksto["psoo"].length; i++){
+				sortedIds.push(day.linksto["psoo"][i]);
+			}
+			sortedIds.sort(function(a,b){
+				return psoo.items[a].label.localeCompare(psoo.items[b].label)});	
 			//Load psoo and judgements					
-			for (var i=0; i<day.linksto["psoo"].length; i++){		
-				var po_key=day.linksto["psoo"][i];			
-				$("#po_list").append(GeneratePOBox(psoo.items, po_key, jdgmts.items,{rule_lookup_url:"index.html",rule_name_lookup:rules.items}));
+			for(var r=0;r<sortedIds.length;r++){
+				$("#po_list").append(GeneratePOBox(psoo.items, sortedIds[r], jdgmts.items,{rule_lookup_url:"index.html",rule_name_lookup:rules.items}));
 			}
 				
 		})

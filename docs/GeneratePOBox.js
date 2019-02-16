@@ -35,13 +35,21 @@ function GeneratePOBox(psoo,po_key, jdgmts,{id_prefix="po", toggle_jdgmts=true, 
 		if(!show_jdgmts)S+="style=\"display:none;\"";
 		S+=">";
 		
+		var sortedIds=[];
+		for (var i=0; i<po.linksto["jdgmts"].length; i++){
+			sortedIds.push(po.linksto["jdgmts"][i]);
+		}
+		sortedIds.sort(function(a,b){
+			return jdgmts[a].label.localeCompare(jdgmts[b].label)});
+		
 		//judgements
-		for (var j=0;j<po.linksto["jdgmts"].length; j++){
-			var jdgmtID=po.linksto["jdgmts"][j]
+		for (var j=0;j<sortedIds.length; j++){
+			var jdgmtID=sortedIds[j];
 			S+=GenerateJdgmtBox(jdgmts,jdgmtID,{rule_lookup_url:rule_lookup_url, rule_name_lookup:rule_name_lookup})		
 			
 		}
 		S+="</div>";//jdgmt_list
-		
+	
 	return S+"</section>";
+	
 }
