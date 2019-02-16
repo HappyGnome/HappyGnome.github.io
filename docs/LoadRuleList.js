@@ -3,15 +3,15 @@ $(document).ready(function(){
 	.done(function(rules){
 		$("#title_annot").text("updated: " + rules.date +" by "+ rules.author);
 		//sort items ids by label
-		labelmap=[];
+		sortedIds=[];
 		for (var i in rules.items){
-			labelmap.push([rules.items[i].label,i]);
+			sortedIds.push(i);
 		}
-		labelmap.sort(function(a,b){return a[0].localeCompare(b[0])});
+		sortedIds.sort(function(a,b){
+			return rules.items[a].label.localeCompare(rules.items[b].label)});
 		var bRepealedRule=false;
-		for (var l=0; l<labelmap.length;l++){//sort
-			console.log(l);
-			var i=labelmap[l][1];
+		for (var l=0; l<sortedIds.length;l++){
+			var i=sortedIds[l];
 			var rule=rules.items[i];			
 			if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items, i));
 			else {
