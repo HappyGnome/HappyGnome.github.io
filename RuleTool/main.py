@@ -380,12 +380,16 @@ def cmdSetAddDate(args):
 #find and replace_with are \ escaped
 def cmdRefactor(args):
     if len(args)<2: return True
+    substr=False
+    inp=input("Replace substrings? (Y/N): ")
+    substr=(inp in ["Y","y"])
     repl=""
     if len(args)>2: 
         repl=ParseSlashEscaped(args[2])
     find=ParseSlashEscaped(args[1])
     for l in tables:
-        tables[l].refactor(args[0],find,repl)
+        count=tables[l].repl(args[0],find,repl,substr)
+        print("In "+l+" replaced: "+str(count))
     return True
     
     

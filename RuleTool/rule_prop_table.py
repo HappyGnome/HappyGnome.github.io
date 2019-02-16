@@ -6,7 +6,9 @@ Created on Tue Feb 12 12:33:00 2019
 """
 import dictable
 import copy
-    
+import utils
+
+ 
 class rule_prop_item(dictable.dictable):
     def __init__(self):
         self.date=""
@@ -25,6 +27,7 @@ class rule_prop_item(dictable.dictable):
                 if len(self.linksto[l])>0:
                     self.linksto[l].extend(oldLinks[l])
                 else: self.linksto[l]=oldLinks[l]
+   
         
 class rpi_rule(rule_prop_item):
     def __init__(self):
@@ -260,16 +263,18 @@ class rule_prop_table(dictable.dictable):
     #replace text in specified attribute across all items
     #exact matches of whole strings only
     #args:attr_name find replace_with
+    #attr_name can be decorated:
+    #xyz/*/abc => replace  attribute/entry 'abc' in all items (*) in xyz
+    #xyz/*/*/abc...
     #find and replace_with are \ escaped
-    def refactor(self, attrname, find, replace):
+    #return number of replacements
+    def repl(self, attrname, find, replace, substr):
+        strings=attrname.split('/')
+        count=0
         for l in self.__items__:
             item=self.__items__[l]
-            try:
-                atr=getattr(item,attrname)
-                if atr==find:
-                    setattr(item,attrname,replace)
-            except:
-                return
+            count+=utils.repl(item,strings,find,replace,substr)
+        return count 
     
     
     
