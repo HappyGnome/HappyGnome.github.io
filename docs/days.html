@@ -2,24 +2,21 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Nomic Rules</title>
+	<title>The Days</title>
 	<meta name="author" content="HappyGnome">
 	<link rel="stylesheet" href="style.css">
 	<script src="jquery-3.3.1.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<script type="application/javascript" src="GenerateRuleBox.js"></script>
-	<script type="application/javascript" src="LoadRuleList.js"></script>
-
 </head>
 <body>
+	<script type="application/javascript" src="GenerateRuleBox.js"></script>
+	<script type="application/javascript" src="LoadDayList.js"></script>
 	
 	<script src="navhide.js" type="application/javascript"></script>
-
 	<nav>
 		<div class="navinner">
-			<a class="navlink navlink_s" href="index.html">Rules</a>
-			<a class="navlink" href="days.html">Days</a>
+			<a class="navlink" href="index.html">Rules</a>
+			<a class="navlink_s navlink" href="days.html">Days</a>
 		</div>
 	</nav>
 	<noscript>
@@ -27,12 +24,9 @@
 	</noscript>
 	<div class="navspacer"></div>
 	<div class="page_head">
-		<h1 id="title">The Rules</h1><h2 id="title_annot"></h2>
+		<h1 id="title">The Days</h1><h2 id="title_annot"></h2>
 	</div>
-	<div class="rules_list" id="rules_list">
+	<div class="rules_list" id="days_list">
 	</div>
-	<h2 class="repealed_heading">Repealed Rules</h2>
-	<div class="rules_list_repealed rules_list " id="rules_list_repealed">
-	</div>
-</body>
+</body>	
 </html>

@@ -1,0 +1,35 @@
+$(document).ready(function(){	
+	var ruleIDstr=/[0-9]+/.exec(location.search);	
+	if(ruleIDstr){
+		var ruleID=parseInt(ruleIDstr);
+		$.ajax({url:"rules.json", type:"GET", dataType:"json"})
+		.done(function(rules){
+			if (!(ruleID in rules.items)){
+				$("#title").text("Rule Not Found!");
+				return;
+			}
+			var rule=rules.items[ruleID];
+			$("#title").text("Rule "+rule.label+ " Details");
+			
+			//load propositions while we render the rule##############################
+			$.ajax({url:"props.json", type:"GET", dataType:"json"})
+			.done(function(props){
+				for (var i=0; i<rule.linksto["props"].length; i++){		
+					var prop=props.items[rule.linksto["props"][i]];			
+					if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, rule.linksto["props"][i],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+					else $("#prop_list_repealed").append(GenerateRuleBox(props.items,rule.linksto["props"][i], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}))
+				}
+			})
+			.fail(function(){
+				alert("Oops! Retrieval of rules data failed.");
+			});
+			
+			//Back to the rule!#################################################
+			if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}));
+			else $("#rules_list_repealed").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}))
+		})
+		.fail(function(){
+			alert("Oops! Retrieval of rules data failed.");
+		});	
+	}
+});

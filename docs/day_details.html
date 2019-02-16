@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Rule Details</title>
+	<title>Day Details</title>
 	<meta name="author" content="HappyGnome">
 	<link rel="stylesheet" href="style.css">
 	<script src="jquery-3.3.1.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body>	
+	<script type="application/javascript" src="GenerateJdgmtBox.js"></script>
+	<script type="application/javascript" src="GeneratePOBox.js"></script>
 	<script type="application/javascript" src="GenerateRuleBox.js"></script>
-	<script type="application/javascript" src="LoadRuleDetails.js"></script>
+	<script type="application/javascript" src="LoadDayDetails.js"></script>
 	<script src="navhide.js" type="application/javascript"></script>
-	
 	<nav>
 		<div class="navinner">
 			<a class="navlink" href="index.html">Rules</a>
@@ -24,17 +25,16 @@
 	</noscript>
 	<div class="navspacer"></div>
 	<div class="page_head">
-		<h1 id="title">Rule Details</h1><h2 id="title_annot"></h2>
+		<h1 id="title">Day Details</h1><h2 id="title_annot"></h2>
 	</div>
-	<div class="rules_list" id="rules_list">
-	</div>
-	<div class="rules_list rules_list_repealed" id="rules_list_repealed">
-	</div>
-	<h2 class="repealed_heading">Related Propositions (enacted):</h2>
+	<h2 class="repealed_heading">Propositions</h2>
 	<div class="rules_list" id="prop_list">
 	</div>
-	<h2 class="repealed_heading">Related Propositions (not enacted):</h2>
-	<div class="rules_list rules_list_repealed" id="prop_list_repealed">
+	<div class="rules_list_repealed" id="prop_list_repealed">
 	</div>
+	<h2 class="repealed_heading">Points of Order</h2>
+	<div class="rules_list" id="po_list">
+	</div>
+	
 </body>
 </html>

@@ -5,7 +5,11 @@ function GenerateRuleBox(rules,rule_key,{id_prefix="rule", toggle_notes=true, sh
 	var rule=rules[rule_key];
 	var S="<section class=\"rulebox\" id=\""+id_prefix+rule_key+"\">"+
 			"<div class=\"rulehead\"><h1>"+
-				rule.label+"</h1>";
+				rule.label;
+				if('decorator' in rule && rule.decorator!=""){
+					S+="["+rule.decorator+"]";
+				}
+				S+="</h1>";
 				if(details)S+="<div class=\"detail_link\">[<a href=rule_details.html?"
 		+rule_key+">details</a>]</div>";
 		S+="<div class=\"subhead\">";
@@ -18,14 +22,14 @@ function GenerateRuleBox(rules,rule_key,{id_prefix="rule", toggle_notes=true, sh
 			S+="<p>"+rule.text[i]+"</p>";
 		}
 		S+="</div>";
-		if(rule.notes.length || rule.linksto.length){
+		if(rule.notes.length || rule.linksto["rules"].length){
 			S+="<div class=\"rulefooter\"";
 			if(!show_notes)S+="style=\"display:none;\"";
 			S+=">";
-			if(rule.linksto.length){//C.F.		
+			if(rule.linksto["rules"].length){//C.F.		
 				S+="<div class=\"cf\"> <i>c.f. rules:</i>";
-				for (var j=rule.linksto.length-1; j>=0; --j){
-					var ind=rule.linksto[j];
+				for (var j=rule.linksto["rules"].length-1; j>=0; --j){
+					var ind=rule.linksto["rules"][j];
 					var label=""
 					if(rule_name_lookup){//look in external rule list if given
 						label=rule_name_lookup[ind].label;						
