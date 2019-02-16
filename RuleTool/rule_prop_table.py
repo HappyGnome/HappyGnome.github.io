@@ -257,8 +257,19 @@ class rule_prop_table(dictable.dictable):
             return False
         
         
-    
-    
+    #replace text in specified attribute across all items
+    #exact matches of whole strings only
+    #args:attr_name find replace_with
+    #find and replace_with are \ escaped
+    def refactor(self, attrname, find, replace):
+        for l in self.__items__:
+            item=self.__items__[l]
+            try:
+                atr=getattr(item,attrname)
+                if atr==find:
+                    setattr(item,attrname,replace)
+            except:
+                return
     
     
     

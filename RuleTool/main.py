@@ -134,27 +134,33 @@ def previewText(text):#open text editor and let user edit text, return edited ve
         print("Error previewing file!")
         return text
 
-#convert e.g. ["pxyz\","abc", "dfg"] to ["p", "xyz abc", ind]
-#ind=index of first argument not parsed
-#or return None
-    
+#convert '\\'-> '\' and '\_' to ' ' in string other characters following a \ are stripped
+def ParseSlashEscaped(string):
+    if len(string)<1: return ""
+    repl={"\\":"\\","_":" "}
+    ret=""
+    i=0
+    while i<len(string):
+        
+        if string[i]=='\\':
+            i+=1
+            if i<len(string):
+                if string[i] in repl:
+                    ret+=repl[string[i]]
+                i+=1
+        else: 
+            ret+=string[i]
+            i+=1
+    return ret
+        
+
+#convert e.g. ["p", "xyz\_abc", "dfg"] to ["p", "xyz abc"]
+#or return None    
 def toRulesLabel(strings):
     if len(strings)<2 or not (strings[0] in tables):
         return None
-    ind=2
-    st=strings[1]
-    if st[-1]=='\\':
-        st=st[:-1]+' '#strip trailing \
-            
-    for s in strings[2:]:
-        ind+=1
-        if len(s)<1:break
-        elif s[-1]!='\\':
-            st=st+s
-            break
-        else:
-            st=st+s[:-1]+" "#strip trailing \
-    return [strings[0][:],st,ind]  
+    st=ParseSlashEscaped(strings[1])
+    return [strings[0][:],st]  
 
 def getAuthorDate():
     return {"author":config["user"], "date":str(datetime.date.today())}
@@ -368,6 +374,21 @@ def cmdSetAddDate(args):
     if len(args)<1: return True
     date_of_new_items=args[0]
     return True
+
+#replace text in specified attribute accross all items
+#args:attr_name find replace_with
+#find and replace_with are \ escaped
+def cmdRefactor(args):
+    if len(args)<2: return True
+    repl=""
+    if len(args)>2: 
+        repl=ParseSlashEscaped(args[2])
+    find=ParseSlashEscaped(args[1])
+    for l in tables:
+        tables[l].refactor(args[0],find,repl)
+    return True
+    
+    
 '''
 ************************************************************
 Main CLI cmd parser
@@ -376,7 +397,9 @@ return False to terminate main loop
 '''
 handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel, 
           "edit":cmdEdit, "add":cmdAdd, "link":cmdLink, 
-          "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm, "date":cmdSetAddDate}# "del":cmdDel, ""}#define handlers
+          "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm,
+          "date":cmdSetAddDate,
+          "repl":cmdRefactor}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks
