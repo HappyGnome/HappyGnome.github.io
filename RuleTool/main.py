@@ -106,15 +106,16 @@ def editText_paras(paras):#calls editText on text consisting of given paragraphs
 #Parses output to return new list of paragraphs
     text=""
     for p in paras:
-        text+=p+"\n\n"
+        text+=p+"\n"
     text=editText(text)
     
     ret=[]
     para=""
     for line in text.splitlines():
         if line.lstrip()=="":
-            ret.append(para[:])
-            para=""
+            if para!="":
+                ret.append(para)
+                para=""
         else:
             para+=line+"\n"
     if para!="":
