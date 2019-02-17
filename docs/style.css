@@ -30,39 +30,52 @@ nav####################################################
 nav{
 	width:100vw;
 	position: fixed;
+	background-color: #ffffff;
 	top: 0px;
 	left: 0px;
-	background-color: #ffffff;
-	transition: top 0.5s;
-
 }
 nav .navinner{
 	display: flex;
-	justify-content: space-around;
+	flex-direction:row;
+	justify-content: flex-end;
+	height:30px;
+	padding:5px 30px 5px 5px;
+	
+	border-style: solid;
+	border-color: #000000;
+	border-width: 0 0 1px 0;
 
 }
-nav .navinner .navlink{
-	text-decoration: none;
-	background-color: #eeeeee;
+nav .navinner .navtoggle{
 	color:#000000;
-	border-width: 1px;
-	border-color: black;
-	border-style: none solid solid solid;
-	border-radius: 0px 0px 5px 5px;
-	font-size: 12pt;
-	padding-left:auto;
-	padding-right:auto;
-	flex:1;
-	text-align: center;
+	width:30px;
+	height:30px;
+	line-height:30px;
+	border: 1px solid black;
+	border-radius:5px;
+	text-align:center;
+	
 }
-nav .navinner .navlink_s{
-	background-color: transparent;
-	color:transparent;
-	border: None;
+nav #navdropdown{
+	display: flex;
+	flex-direction:column;
+
+}
+nav #navdropdown .navlink{
+	display: block;
+	text-decoration: none;
+	font-size: 12pt;
+	padding: 10px 30px 10px 10px;
+	text-align: right;
+	border-style: solid;
+	border-color: #aaaaaa;
+	border-width: 0 0 1px 0;
+}
+nav  #navdropdown .navlink_s{
 	
 }
 .navspacer{
-	margin-top:20px;
+	margin-top:40px;
 }
 /*
 PageHead####################################################

@@ -14,14 +14,27 @@
 </head>
 <body>
 	
-	<script src="navhide.js" type="application/javascript"></script>
+	<script type="application/javascript">
+		function ToggleNavDrop(){
+			$('#navdropdown').toggle();
+			$('.navtoggle').toggle();
+		}
+	</script>
+
 
 	<nav>
 		<div class="navinner">
+			<a class="navtoggle"  style="display:none;" onclick="ToggleNavDrop()">+</a>
+			<a class="navtoggle" onclick="ToggleNavDrop()">x</a>
+		</div>
+		<div id="navdropdown">
 			<a class="navlink navlink_s" href="index.html">Rules</a>
 			<a class="navlink" href="days.html">Days</a>
 		</div>
 	</nav>
+	<script type="application/javascript">
+		ToggleNavDrop();//start with nav displayed and toggle in script, in case there's no JS support
+	</script>
 	<noscript>
 		<div class="noscript_banner"><h1>This page may not load correctly with Javascript disabled!</h1></div>
 	</noscript>
