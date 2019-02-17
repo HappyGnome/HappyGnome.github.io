@@ -44,7 +44,7 @@ $(document).ready(function(){
 				return psoo.items[a].label.localeCompare(psoo.items[b].label)});	
 			//Load psoo and judgements					
 			for(var r=0;r<sortedIds.length;r++){
-				$("#po_list").append(GeneratePOBox(psoo.items, sortedIds[r], jdgmts.items,{rule_lookup_url:"index.html",rule_name_lookup:rules.items}));
+				$("#po_list").append(GeneratePOBox(psoo.items, sortedIds[r], jdgmts.items,{rule_lookup_url:"index.html",rule_name_lookup:rules.items, show_jdgmts:true}));
 			}
 				
 		})
