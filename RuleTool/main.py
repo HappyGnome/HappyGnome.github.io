@@ -303,8 +303,8 @@ def setFlag(args, flag):
 
 def cmdEdit_setInEffect(args): 
     return setFlag(args,"ineffect")
-def cmdEdit_setDisputed(args): 
-    return setFlag(args,"disputed")
+def cmdEdit_setOverruled(args): 
+    return setFlag(args,"overruled")
 
 #convert first arg into attribute with given name, if it exists
 def setString(args, atr):
@@ -324,7 +324,7 @@ def cmdSetDecorator(args):
     return setString(args,"decorator")
     
 edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, 
-               "se":cmdEdit_setInEffect, "sdisp":cmdEdit_setDisputed,
+               "se":cmdEdit_setInEffect, "sovr":cmdEdit_setOverruled,
                "auth":cmdSetAuth, "date":cmdSetDate, "dec":cmdSetDecorator}
 def cmdEdit(args):
     if len(args)<1: return True
@@ -378,7 +378,7 @@ def cmdSetAddDate(args):
 #replace text in specified attribute accross all items
 #args:attr_name find replace_with
 #find and replace_with are \ escaped
-def cmdRefactor(args):
+def cmdRepl(args):
     if len(args)<2: return True
     substr=False
     inp=input("Replace substrings? (Y/N): ")
@@ -403,7 +403,7 @@ handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel,
           "edit":cmdEdit, "add":cmdAdd, "link":cmdLink, 
           "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm,
           "date":cmdSetAddDate,
-          "repl":cmdRefactor}# "del":cmdDel, ""}#define handlers
+          "repl":cmdRepl}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks

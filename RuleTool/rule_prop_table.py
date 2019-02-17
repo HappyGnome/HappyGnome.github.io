@@ -92,38 +92,16 @@ class rpi_jdgmt(rule_prop_item):
         self.author=""
         self.text=[]
         self.notes=[]
-        self.disputed='0'#TODO: make this settable
+        self.overruled='0'
         
         self.linksto={"psoo":[], "rules":[], "jdgmts":[]}#props, rules etc
         
     def dictable_items(self):
         dictables=super().dictable_items()
-        dictables.extend(["author", "text", "notes", "disputed"])
+        dictables.extend(["author", "text", "notes", "overruled"])
         return dictables   
     
-class rpi_rule_converter(rpi_rule):
-    def __init__(self):    
-        super().__init__()
-    def from_dict(self, dct):        
-        self.date=dct["date"]
-        self.text=dct["text"]
-        self.label=dct["label"]
-        self.notes=dct["notes"]
-        self.ineffect=dct["ineffect"]
-        self.linksto["rules"]=dct["linksto"]
-        self.linksto["props"]=dct["proplinks"]
-class rpi_prop_converter(rpi_prop):
-    def __init__(self):
-        super().__init__()
-    def from_dict(self, dct):        
-        self.author=dct["author"]
-        self.date=dct["date"]
-        self.text=dct["text"]
-        self.label=dct["label"]
-        self.notes=dct["notes"]
-        self.ineffect=dct["ineffect"]
-        self.linksto["rules"]=dct["linksto"]
-        self.linksto["props"]=dct["proplinks"]
+
         
 
 class rule_prop_table(dictable.dictable):
