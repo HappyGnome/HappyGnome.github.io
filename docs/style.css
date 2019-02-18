@@ -88,6 +88,14 @@ PageHead####################################################
 	.page_head{flex-direction:row;align-items: baseline;}
 }
 /*
+PageFooter####################################################
+*/
+.page_footer{
+	font-size:10pt;
+	margin:50px 5px;
+	color:#cccccc;
+}
+/*
 Rulebox####################################################
 */
 .rulebox{
