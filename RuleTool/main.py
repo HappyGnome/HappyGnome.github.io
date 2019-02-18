@@ -315,7 +315,7 @@ def setString(args, atr):
     
     if len(args)<1: return True
     
-    setattr(selected_obj,atr,args[0])      
+    setattr(selected_obj,atr,ParseSlashEscaped(args[0]))      
     return True
 def cmdSetAuth(args):
     return setString(args,"author")
