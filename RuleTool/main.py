@@ -12,7 +12,7 @@ import rule_prop_table as rpt
 import sys
 
 #load config or create it
-config={"user":"", "sitepath":"", "editor":"notepad.exe"}
+config={"user":"", "sitepath":"", "editor":"notepad.exe", "shortcuts":{}}
 
 def cmdConfig(args):
     global config
@@ -23,16 +23,36 @@ def cmdConfig(args):
         with open("config.json","w") as config_file:
             json.dump(config,config_file)
     except:
-        return False
+        print("Warning: Config not saved!")
+    return True
+
+def cmdSetShortcut(args):
+    global config
+    if len(args)<2: 
+        if args and args[0]=="-l":
+            for s in config["shortcuts"]:
+                print("\"\\@"+s+"\" -> \""+config["shortcuts"][s]+"\"") 
+        return True
+    
+    shortcuts=config["shortcuts"]
+    text=ParseSlashEscaped(args[1])
+    shortcuts.update({args[0]:text})  
+    print("Shortcut added: \"\\@"+args[0]+"\" -> \""+text+"\"")      
+    
+    try:
+        with open("config.json","w") as config_file:
+            json.dump(config,config_file)
+    except:
+        print("Warning: Config not saved!")
     return True
 
 try:
     with open("config.json","r") as config_file:
-        config=json.load(config_file)
+        config.update(json.load(config_file))
 except:
-        if not cmdConfig(None):
-            print("Failed to create config! Exiting...")
-            sys.exit(1)
+    if not cmdConfig(None):
+        print("Failed to create config! Exiting...")
+        sys.exit(1)
 
 
 #load json files for the website
@@ -138,7 +158,7 @@ def previewText(text):#open text editor and let user edit text, return edited ve
 #convert '\\'-> '\' and '\_' to ' ' in string other characters following a \ are stripped
 def ParseSlashEscaped(string):
     if len(string)<1: return ""
-    repl={"\\":"\\","_":" "}
+    repl={"\\":"\\","_":" "}#Do not add @ or # as keys!
     ret=""
     i=0
     while i<len(string):
@@ -146,9 +166,20 @@ def ParseSlashEscaped(string):
         if string[i]=='\\':
             i+=1
             if i<len(string):
+                strip_length=1#characters parsed following \\
                 if string[i] in repl:
                     ret+=repl[string[i]]
-                i+=1
+                elif string[i]=='@':#shortcuts
+                    tag=string[i:].split()[0][1:]#get all between @ and whitespace
+                    strip_length+=len(tag)
+                    ret+=config["shortcuts"].get(tag,'')
+                        
+                '''elif string[i]=='#':#cross references
+                    tag=string[i:].split()[0][1:]#get all between # and whitespace
+                    strip_length+=len(tag)
+                    ret+=config["shortcuts"].get(tag,'')'''
+                    
+                i+=strip_length
         else: 
             ret+=string[i]
             i+=1
@@ -404,7 +435,7 @@ handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel,
           "edit":cmdEdit, "add":cmdAdd, "link":cmdLink, 
           "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm,
           "date":cmdSetAddDate,
-          "repl":cmdRepl}# "del":cmdDel, ""}#define handlers
+          "repl":cmdRepl, "shortcut":cmdSetShortcut}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks
