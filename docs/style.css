@@ -47,20 +47,37 @@ nav .navinner .navlink{
 	color:#000000;
 	border-width: 1px;
 	border-color: black;
-	border-style: none solid solid solid;
+	border-style: none solid solid none;
 	border-radius: 0px 0px 0px 0px;
 	font-size: 12pt;
 	line-height: 30px;
 	flex:1;
 	text-align: center;
 }
+nav .navinner .navlink:hover{
+	border-width: 2px;
+	border-style: solid solid solid solid;
+}
 nav .navinner .navlink_s{
 	background-color: transparent;
-	color:transparent;
-	
 }
 .navspacer{
-	margin-top:30px;
+	margin-top:50px;
+	transition: margin-top 0.5s;
+}
+
+@media screen and (min-width: 700pt){
+	nav{
+	width: 80pt;
+	position: fixed;
+	top: 0px;
+	left: 620pt;
+	box-shadow: 0px 0px 5px;
+	}
+	nav .navinner{
+	flex-direction:column;}
+	.navspacer{	margin-top:0px;	}
+	nav .navinner .navlink{border-style: none solid solid solid;}
 }
 /*
 PageHead####################################################
@@ -102,7 +119,7 @@ Rulebox####################################################
 	border-radius: 20px;	
 	width: 90vw;
 	font-size: 10pt;
-	max-width: 60em;
+	max-width: 600pt;
 	margin:5px;	
 	
 }
@@ -225,7 +242,7 @@ PObox####################################################
 	border-radius: 0px;	
 	width: 90vw;
 	font-size: 10pt;
-	max-width: 60em;
+	max-width: 600pt;
 	margin:5px;	
 	
 }
@@ -261,7 +278,7 @@ jdgmtbox####################################################
 .jdgmtbox{
 	color:#000000;
 	font-size: 10pt;
-	max-width: 60em;
+	max-width: 600pt;
 	margin:5px;	
 	
 }
@@ -345,7 +362,7 @@ disputed jdgmtbox####################################################
 	border-radius: 10px;	
 	width: 90vw;
 	font-size: 10pt;
-	max-width: 60em;	
+	max-width: 600pt;	
 	
 	display: flex;
 	flex-direction: row;
