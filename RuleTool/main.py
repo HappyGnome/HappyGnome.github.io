@@ -80,6 +80,7 @@ psoo.setCompanion(jdgmts)
 
 tables={"r":rules, "p":props, "o":psoo, "d":days, "j":jdgmts}#handy for selecting an rpt based on user r/p/... switch
 paths={"r":"rules", "p":"props", "o":"psoo", "d":"days", "j":"jdgmts"}
+tables_pages={"r":"rule_details.html?", "p":"", "o":"", "d":"days.html?", "j":""}#hrefs which if appended by an item ID opens a page with more details
 
 for k in tables:
     t=tables[k]
@@ -106,20 +107,24 @@ selected_obj=None
 date_of_new_items=""
 
 def editText(text):#open text editor and let user edit text, return edited version
+    text=DeParseSlashEscaped(text)
     try:
         with open("temp.txt","w") as file:#create temp file
             file.write(text)
     except:
         print("Error creating file to edit!")
+        text=ParseSlashEscaped(text)
         return text
     try:
         proc=sp.Popen([config["editor"], "temp.txt"])
         proc.wait()
         with open("temp.txt","r") as file:#create temp file
             text=file.read()
+        text=ParseSlashEscaped(text)
         return text
     except:
         print("Error editing file!")
+        text=ParseSlashEscaped(text)
         return text
     
 def editText_paras(paras):#calls editText on text consisting of given paragraphs. 
@@ -170,21 +175,58 @@ def ParseSlashEscaped(string):
                 if string[i] in repl:
                     ret+=repl[string[i]]
                 elif string[i]=='@':#shortcuts
-                    tag=string[i:].split()[0][1:]#get all between @ and whitespace
+                    tag=string[i:].split(None, 1)[0][1:]#get all between @ and whitespace
                     strip_length+=len(tag)
                     ret+=config["shortcuts"].get(tag,'')
                         
-                '''elif string[i]=='#':#cross references
-                    tag=string[i:].split()[0][1:]#get all between # and whitespace
-                    strip_length+=len(tag)
-                    ret+=config["shortcuts"].get(tag,'')'''
+                elif string[i]=='#':#cross references: \#mode id  
+                    sRem=string[i:]#remaining string
+                    toks=sRem.split(None,2)#get all between # and whitespace
+                    strip_length=len(toks[0])#consume only one token, if that's all that's left
+                    if len(toks)>1:#consume two toks (#mode & id)
+                        print("Detected link to "+toks[0][1:]+" "+toks[1])
+                        ret+=MakeHref(toks[0][1:], toks[1])
+                        strip_length=len(toks[1])+len(string[i:].split(toks[1],1)[0])
                     
                 i+=strip_length
         else: 
             ret+=string[i]
             i+=1
     return ret
-        
+
+'''
+partially undo parsing of slash-escaped string
+
+Currently the only reversible escaped character is '\'.
+Currently does not replace all spaces with \_
+
+Return the result of de-parsing string
+'''
+def DeParseSlashEscaped(string):
+    if len(string)<1: return ""
+    repl={"\\":"\\\\"}#Do not add @ or # as keys!
+    ret=""
+    i=0
+    while i<len(string):        
+        s=repl.get(string[i],string[i])
+        ret+=s
+        i+=1
+    return ret
+
+'''
+Return string containing html code for a link to the item with given label
+(after resolution) in tables[mode]. Link text=label by default
+'''
+def MakeHref(mode, label, text="") :
+    if not text: text=label#default value
+    item_id=ArgsToID([mode,label])[0]
+    if not item_id:
+        return ""
+    href=tables_pages.get(mode,"")
+    if not href:
+        print("No valid href!")
+        return ""
+    return "<a href=\""+href+item_id+"\">"+text+"</a>"
 
 #convert e.g. ["p", "xyz\_abc", "dfg"] to ["p", "xyz abc"]
 #or return None    
@@ -233,7 +275,7 @@ def ResolveID(items):
         return [conv[s], "#"+s]
     return ["",""]
 
-#return [resolved id,mode, selection_string, selected_object] from args ["mode","...\","..."]
+#return [resolved id,mode, selection_string, selected_object] from args ["mode","slash_escaped_label"]
 #return ["",""] on failure
 def ArgsToID(args):
     labeldata=toRulesLabel(args)
