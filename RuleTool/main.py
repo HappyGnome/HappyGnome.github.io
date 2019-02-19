@@ -80,7 +80,7 @@ psoo.setCompanion(jdgmts)
 
 tables={"r":rules, "p":props, "o":psoo, "d":days, "j":jdgmts}#handy for selecting an rpt based on user r/p/... switch
 paths={"r":"rules", "p":"props", "o":"psoo", "d":"days", "j":"jdgmts"}
-tables_pages={"r":"rule_details.html?", "p":"", "o":"", "d":"days.html?", "j":""}#hrefs which if appended by an item ID opens a page with more details
+tables_pages={"r":"rule_details.html?", "p":"", "o":"", "d":"day_details.html?", "j":""}#hrefs which if appended by an item ID opens a page with more details
 
 for k in tables:
     t=tables[k]
@@ -176,17 +176,26 @@ def ParseSlashEscaped(string):
                     ret+=repl[string[i]]
                 elif string[i]=='@':#shortcuts
                     tag=string[i:].split(None, 1)[0][1:]#get all between @ and whitespace
-                    strip_length+=len(tag)
-                    ret+=config["shortcuts"].get(tag,'')
+                    strip_length+=len(tag)+1#also consume first whitespace
+                    ret+=config["shortcuts"].get(tag,'\\@'+tag)
                         
                 elif string[i]=='#':#cross references: \#mode id  
                     sRem=string[i:]#remaining string
-                    toks=sRem.split(None,2)#get all between # and whitespace
-                    strip_length=len(toks[0])#consume only one token, if that's all that's left
-                    if len(toks)>1:#consume two toks (#mode & id)
+                    toks=sRem.split(None,3)#get all between # and whitespace
+                    if len(toks)>2:#consume three toks (#mode, id, label)
                         print("Detected link to "+toks[0][1:]+" "+toks[1])
-                        ret+=MakeHref(toks[0][1:], toks[1])
-                        strip_length=len(toks[1])+len(string[i:].split(toks[1],1)[0])
+                        link=MakeHref(toks[0][1:], toks[1], toks[2])
+                        if link:
+                            ret+=link
+                            strip_length=len(toks[0])#calculate total length of the 3 tokens+ space between
+                            strip_length+=len(toks[1])+len(string[i+strip_length:].split(toks[1],1)[0])
+                            strip_length+=len(toks[2])+len(string[i+strip_length:].split(toks[2],1)[0])
+                            strip_length+=1
+                        else:
+                            ret+='\\#'
+                    else:#not enough tokens - link is invalid, keep it and move on
+                        ret+='\\#'
+                        print("Link to "+toks[0]+" is missing specifiers!")
                     
                 i+=strip_length
         else: 
@@ -217,11 +226,17 @@ def DeParseSlashEscaped(string):
 Return string containing html code for a link to the item with given label
 (after resolution) in tables[mode]. Link text=label by default
 '''
-def MakeHref(mode, label, text="") :
+def MakeHref(mode, label, text="", auto_link=True) :
+    text=ParseSlashEscaped(text)
     if not text: text=label#default value
-    item_id=ArgsToID([mode,label])[0]
+    [item_id,mode_A2I,sel_string, sel_obj]=ArgsToID([mode,label])
     if not item_id:
+        print("Linked item not found!")
         return ""
+    
+    if selected_obj and auto_link:#links items also in linksto
+        tables[sel_mode].makeLink(selected_id,item_id,tables[mode_A2I].type_string)
+    
     href=tables_pages.get(mode,"")
     if not href:
         print("No valid href!")
