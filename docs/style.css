@@ -46,20 +46,22 @@ nav .navinner .navlink{
 	background-color: #eeeeee;
 	color:#000000;
 	border-width: 1px;
-	border-color: black;
-	border-style: none solid solid none;
+	border-color: transparent;
+	box-shadow: 0px 0px 0px 1px;
+	border-style: solid solid solid solid;
 	border-radius: 0px 0px 0px 0px;
 	font-size: 12pt;
 	line-height: 30px;
 	flex:1;
+	z-index:1;
 	text-align: center;
 }
 nav .navinner .navlink:hover{
-	border-width: 2px;
-	border-style: solid solid solid solid;
+	box-shadow: 0px 0px 1px 2px;
+	z-index:2;
 }
 nav .navinner .navlink_s{
-	background-color: transparent;
+	background-color: #ffffff;
 }
 .navspacer{
 	margin-top:50px;
@@ -72,12 +74,11 @@ nav .navinner .navlink_s{
 	position: fixed;
 	top: 0px;
 	left: 620pt;
-	box-shadow: 0px 0px 5px;
+	box-shadow: 0px 0px 3px 1px;
 	}
 	nav .navinner{
 	flex-direction:column;}
 	.navspacer{	margin-top:0px;	}
-	nav .navinner .navlink{border-style: none solid solid solid;}
 }
 /*
 PageHead####################################################
