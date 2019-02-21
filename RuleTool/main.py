@@ -80,7 +80,8 @@ psoo.setCompanion(jdgmts)
 
 tables={"r":rules, "p":props, "o":psoo, "d":days, "j":jdgmts}#handy for selecting an rpt based on user r/p/... switch
 paths={"r":"rules", "p":"props", "o":"psoo", "d":"days", "j":"jdgmts"}
-tables_pages={"r":"rule_details.html?", "p":"", "o":"", "d":"day_details.html?", "j":""}#hrefs which if appended by an item ID opens a page with more details
+#css classes for links to particular objects on from tables
+tables_class={"r":"a_rule", "p":"a_prop", "o":"a_po", "d":"a_day", "j":"a_jdgmt"}
 
 for k in tables:
     t=tables[k]
@@ -237,11 +238,12 @@ def MakeHref(mode, label, text="", auto_link=True) :
     if selected_obj and auto_link:#links items also in linksto
         tables[sel_mode].makeLink(selected_id,item_id,tables[mode_A2I].type_string)
     
-    href=tables_pages.get(mode,"")
-    if not href:
+    cssClass=tables_class.get(mode,"")
+    if not cssClass:
         print("No valid href!")
         return ""
-    return "<a href=\""+href+item_id+"\">"+text+"</a>"
+    #page will append appropriate string to the href to make a link
+    return "<a href=\""+item_id+"\" class=\""+cssClass+"\">"+text+"</a>"
 
 #convert e.g. ["p", "xyz\_abc", "dfg"] to ["p", "xyz abc"]
 #or return None    

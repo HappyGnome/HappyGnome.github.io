@@ -21,6 +21,8 @@ $(document).ready(function(){
 		}
 		if(bRepealedRule) $('#repealed_section').show();
 		
+		MakeUsualCrossLinks();//complete partial anchor tags from json 
+		
 		//refresh hash:
 		var hash=location.hash;
 		if(hash){

@@ -47,6 +47,7 @@ $(document).ready(function(){
 				$('#repealed_props_section').show();
 			}
 			
+			MakeUsualCrossLinks();//complete partial anchor tags from json 
 			
 		})
 		.fail(function(){

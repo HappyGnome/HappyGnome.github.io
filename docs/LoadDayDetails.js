@@ -46,6 +46,8 @@ $(document).ready(function(){
 			for(var r=0;r<sortedIds.length;r++){
 				$("#po_list").append(GeneratePOBox(psoo.items, sortedIds[r], jdgmts.items,{rule_lookup_url:"index.html",rule_name_lookup:rules.items, show_jdgmts:true}));
 			}
+			
+			MakeUsualCrossLinks();//complete partial anchor tags from json 
 				
 		})
 		.fail(function(){
