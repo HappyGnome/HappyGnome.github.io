@@ -6,7 +6,7 @@ $(document).ready(function(){
 			sortedIds.push(i);
 		}
 		sortedIds.sort(function(a,b){
-			return days.items[a].date.localeCompare(days.items[b].date)});
+			return days.items[b].date.localeCompare(days.items[a].date)});
 
 		for (var d=0; d<sortedIds.length; d++){
 			i=sortedIds[d];			
