@@ -270,6 +270,7 @@ PObox####################################################
 	background-color:#eeeeee;
 	border-radius: 0px 0px 0 0;
 	overflow: hidden;
+	padding:0 10px;
 }
 .pobox .jdgmt_list{}
 
@@ -317,8 +318,7 @@ jdgmtbox####################################################
 	font-family: serif;
 }
 .jdgmtbox .jdgmtbody p{
-
-	margin: 0 0px 0 1em;
+	margin: 5px 5px 10px 1em;
 }
 .jdgmtbox .footer{
 	text-align: left;

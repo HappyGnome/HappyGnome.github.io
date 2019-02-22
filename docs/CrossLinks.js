@@ -17,7 +17,6 @@ function MakeUsualCrossLinks(options_in){
 //options={cssClass:"url",...}
 function DoMakeUsualCrossLinks(options){
 	for (a in options){
-		console.log(a);
 		MakeCrossLinks_type(a,options[a]);
 	}		
 }

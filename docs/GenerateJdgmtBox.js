@@ -14,7 +14,7 @@ function GenerateJdgmtBox(jdgmts,jdgmt_key, {id_prefix="jdgmnt", rule_lookup_url
 	}
 	S+="</div><div class=\"footer\">";
 	
-	if(jdgmt.linksto["rules"].length){//C.F.		
+	/*if(jdgmt.linksto["rules"].length){//C.F.		
 		S+="<div class=\"cf\"> <i>c.f. rules:</i>";
 		for (var j=jdgmt.linksto["rules"].length-1; j>=0; --j){
 			var ind=jdgmt.linksto["rules"][j];
@@ -26,7 +26,7 @@ function GenerateJdgmtBox(jdgmts,jdgmt_key, {id_prefix="jdgmnt", rule_lookup_url
 			S+="<a href=\""+rule_lookup_url+"#rule"+ind+"\">"+label+"</a> "
 		}
 		S+="</div>";
-	}
+	}*/
 	
 	S+="<ul>";//Notes
 	for (var j=jdgmt.notes.length-1; j>=0; --j){

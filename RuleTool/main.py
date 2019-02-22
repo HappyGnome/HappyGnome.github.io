@@ -377,6 +377,37 @@ def cmdEdit_addnote(args):
     note.update(getAuthorDate())
     notes.insert(0,note)
     return True
+#return None, or the index of selected note
+def GetNoteID():    
+    if not selected_obj: return None
+    notes=getattr(selected_obj,"notes", None)
+    if notes==None or len(notes)<1: return None
+    
+    if len(notes)==1: return 0
+    
+    #Multiple items!
+    preview_text=""
+    for k in range(len(notes)):
+        preview_text+="############################_"+str(k)+"_############################\n"
+        preview_text+=str(notes[k])+"\n"
+    previewText(preview_text)    
+    
+    try:
+        s=int(input("Please enter the number of the note to select: "))
+        if s>=0 and s<len(notes): return s
+        else: return None
+    except: 
+        return None
+    
+    
+def cmdEdit_editnote(args):
+    ID=GetNoteID()
+    if ID==None: return True
+    
+    note={"content":editText(selected_obj.notes[ID]["content"])}
+    note.update(getAuthorDate())
+    selected_obj.notes[ID]=note
+    return True
 
 #flag is the name of a '0'/'1' string boolean attribute
 def setFlag(args, flag):
@@ -414,7 +445,7 @@ def cmdSetDate(args):
 def cmdSetDecorator(args):
     return setString(args,"decorator")
     
-edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, 
+edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, "ne":cmdEdit_editnote, 
                "se":cmdEdit_setInEffect, "sovr":cmdEdit_setOverruled,
                "auth":cmdSetAuth, "date":cmdSetDate, "dec":cmdSetDecorator}
 def cmdEdit(args):
