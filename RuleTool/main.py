@@ -227,7 +227,7 @@ def DeParseSlashEscaped(string):
 Return string containing html code for a link to the item with given label
 (after resolution) in tables[mode]. Link text=label by default
 '''
-def MakeHref(mode, label, text="", auto_link=True) :
+def MakeHref(mode, label, text="", auto_link=False) :
     text=ParseSlashEscaped(text)
     if not text: text=label#default value
     [item_id,mode_A2I,sel_string, sel_obj]=ArgsToID([mode,label])
@@ -408,6 +408,12 @@ def cmdEdit_editnote(args):
     note.update(getAuthorDate())
     selected_obj.notes[ID]=note
     return True
+def cmdEdit_rmnote(args):
+    ID=GetNoteID()
+    if ID==None: return True
+    
+    selected_obj.notes.pop(ID)
+    return True
 
 #flag is the name of a '0'/'1' string boolean attribute
 def setFlag(args, flag):
@@ -445,7 +451,8 @@ def cmdSetDate(args):
 def cmdSetDecorator(args):
     return setString(args,"decorator")
     
-edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, "ne":cmdEdit_editnote, 
+edit_handlers={"l":cmdEdit_label, "t":cmdEdit_text, "na":cmdEdit_addnote, "ne":cmdEdit_editnote,
+               "nr":cmdEdit_rmnote,
                "se":cmdEdit_setInEffect, "sovr":cmdEdit_setOverruled,
                "auth":cmdSetAuth, "date":cmdSetDate, "dec":cmdSetDecorator}
 def cmdEdit(args):
@@ -462,6 +469,14 @@ def cmdLink(args):
         print(" Linked item not found.")
         return True
     tables[sel_mode].makeLink(selected_id,item_id,tables[mode].type_string)
+    
+def cmdUnLink(args):
+    if not selected_obj: return True
+    [item_id,mode,sel_string, sel_obj]=ArgsToID(args)
+    if not item_id:
+        print(" Linked item not found.")
+        return True
+    tables[sel_mode].breakLink(selected_id,item_id,tables[mode].type_string)
     
     
     return True
@@ -522,7 +537,7 @@ Main CLI cmd parser
 return False to terminate main loop
 '''
 handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel, 
-          "edit":cmdEdit, "add":cmdAdd, "link":cmdLink, 
+          "ed":cmdEdit, "add":cmdAdd, "lk":cmdLink, "ulk":cmdUnLink,
           "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm,
           "date":cmdSetAddDate,
           "repl":cmdRepl, "shortcut":cmdSetShortcut}# "del":cmdDel, ""}#define handlers

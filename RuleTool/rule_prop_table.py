@@ -218,7 +218,7 @@ class rule_prop_table(dictable.dictable):
             return False
     
     '''
-    attempt to break linksbetween self.__items__[item_id]
+    attempt to break links between self.__items__[item_id]
     and self.companions[linked_item_in].items[linked_id]
     return True on success
     '''
@@ -234,7 +234,7 @@ class rule_prop_table(dictable.dictable):
             
             return True
         except KeyError:
-            print("Could not make link!") 
+            print("Could not break link!") 
             return False
         
         
