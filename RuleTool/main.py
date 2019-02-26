@@ -497,6 +497,7 @@ def cmdLink(args):
         print(" Linked item not found.")
         return True
     tables[sel_mode].makeLink(selected_id,item_id,tables[mode].type_string)
+    return True
     
 def cmdUnLink(args):
     if not selected_obj: return True
