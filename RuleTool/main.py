@@ -13,6 +13,7 @@ import sys
 
 #load config or create it
 config={"user":"", "sitepath":"", "editor":"notepad.exe", "shortcuts":{}}
+config_templates={}
 
 def cmdConfig(args):
     global config
@@ -46,7 +47,7 @@ def cmdSetShortcut(args):
         print("Warning: Config not saved!")
     return True
 
-try:
+try:#load config
     with open("config.json","r") as config_file:
         config.update(json.load(config_file))
 except:
@@ -54,6 +55,11 @@ except:
         print("Failed to create config! Exiting...")
         sys.exit(1)
 
+try:#load templates
+    with open("templates.json","r") as template_file:
+        config_templates.update(json.load(template_file))
+except:
+    print("No templates loaded!")
 
 #load json files for the website
 days=rpt.rule_prop_table("days")
@@ -373,9 +379,29 @@ def cmdEdit_addnote(args):
     notes=getattr(selected_obj,"notes", None)
     if notes==None: return True
     
-    note={"content":editText("")}
+    text=""
+    if len(args)>0:
+        text=config_templates.get(args[0],"")
+    note={"content":editText(text)}
     note.update(getAuthorDate())
     notes.insert(0,note)
+    return True
+
+def cmdSetTemplate(args): 
+    global config_templates
+    if len(args)<1:
+        return True
+    text=config_templates.get(args[0],"")
+    text=editText(text)
+    
+    config_templates[args[0]]=text
+    
+    try:
+        with open("templates.json","w") as template_file:
+            json.dump(config_templates,template_file)
+    except:
+        print("Warning: Template not saved!")
+    
     return True
 #return None, or the index of selected note
 def GetNoteID():    
@@ -540,14 +566,16 @@ handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel,
           "ed":cmdEdit, "add":cmdAdd, "lk":cmdLink, "ulk":cmdUnLink,
           "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm,
           "date":cmdSetAddDate,
-          "repl":cmdRepl, "shortcut":cmdSetShortcut}# "del":cmdDel, ""}#define handlers
+          "repl":cmdRepl, "shortcut":cmdSetShortcut, "template":cmdSetTemplate}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks
     
     if toks[0] in handlers:
         return handlers[toks[0]](toks[1:])
-    else: return True
+    else: 
+        print("Unrecognized command!")
+        return True
     
     
 '''

@@ -1,4 +1,5 @@
 RuleTool/*.json
+!RuleTool/templates.json
 RuleTool/*.txt
 RuleTool/.spyproject/workspace.ini
 RuleTool/__pycache__/
