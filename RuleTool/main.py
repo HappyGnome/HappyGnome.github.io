@@ -486,6 +486,8 @@ def cmdEdit(args):
     
     if args[0] in edit_handlers:
         return edit_handlers[args[0]](args[1:])
+    else:
+        print("Unrecognized edit command!")
     return True
 
 def cmdLink(args):
