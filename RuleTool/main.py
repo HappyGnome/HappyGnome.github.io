@@ -154,6 +154,25 @@ def editText_paras(paras):#calls editText on text consisting of given paragraphs
         ret.append(para)#catch final paragraph
     return ret
 
+#open text editor and let user edit text, return edited version
+#Without parsing slash-escaped text
+def editText_plain(text):
+    try:
+        with open("temp.txt","w") as file:#create temp file
+            file.write(text)
+    except:
+        print("Error creating file to edit!")
+        return text
+    try:
+        proc=sp.Popen([config["editor"], "temp.txt"])
+        proc.wait()
+        with open("temp.txt","r") as file:#create temp file
+            text=file.read()
+        return text
+    except:
+        print("Error editing file!")
+        return text
+
 def previewText(text):#open text editor and let user edit text, return edited version
     try:
         with open("tempp.txt","w") as file:#create temp file
@@ -392,7 +411,7 @@ def cmdSetTemplate(args):
     if len(args)<1:
         return True
     text=config_templates.get(args[0],"")
-    text=editText(text)
+    text=editText_plain(text)
     
     config_templates[args[0]]=text
     
