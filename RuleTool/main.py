@@ -401,7 +401,7 @@ def cmdEdit_addnote(args):
     text=""
     if len(args)>0:
         text=config_templates.get(args[0],"")
-    note={"content":editText(text)}
+    note={"content":ParseSlashEscaped(editText_plain(text))}
     note.update(getAuthorDate())
     notes.insert(0,note)
     return True
