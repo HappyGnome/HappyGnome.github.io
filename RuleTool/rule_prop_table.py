@@ -78,12 +78,13 @@ class rpi_po(rule_prop_item):
          #new dictables
         self.author=""
         self.text=[]
+        self.notes=[]
         
         self.linksto={"psoo":[], "rules":[], "days":[], "jdgmts":[]}#props, rules etc
         
     def dictable_items(self):
         dictables=super().dictable_items()
-        dictables.extend(["author", "text"])
+        dictables.extend(["author", "text", "notes"])
         return dictables   
 class rpi_jdgmt(rule_prop_item):
     def __init__(self):

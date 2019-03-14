@@ -15,9 +15,11 @@ function GeneratePOBox(psoo,po_key, jdgmts,{id_prefix="po", toggle_jdgmts=true, 
 		{
 			S+="<p>"+po.text[i]+"</p>";
 		}
-		S+="</div><div class=\"footer\">";
+		S+="</div>"
+		if(po.notes.length){
+			S+="<div class=\"footer\">";
 		
-		if(po.linksto["rules"].length){//C.F.		
+		/*if(po.linksto["rules"].length){//C.F.		
 			S+="<div class=\"cf\"> <i>c.f. rules:</i>";
 			for (var j=po.linksto["rules"].length-1; j>=0; --j){
 				var ind=po.linksto["rules"][j];
@@ -29,26 +31,38 @@ function GeneratePOBox(psoo,po_key, jdgmts,{id_prefix="po", toggle_jdgmts=true, 
 				S+="<a href=\""+rule_lookup_url+"#rule"+ind+"\">"+label+"</a> "
 			}
 			S+="</div>";
-		}
-			
-		S+="</div><div class=\"jdgmt_list\"";
-		if(!show_jdgmts)S+="style=\"display:none;\"";
-		S+=">";
+		}*/
 		
-		var sortedIds=[];
-		for (var i=0; i<po.linksto["jdgmts"].length; i++){
-			sortedIds.push(po.linksto["jdgmts"][i]);
-		}
-		sortedIds.sort(function(a,b){
-			return jdgmts[a].label.localeCompare(jdgmts[b].label)});
 		
-		//judgements
-		for (var j=0;j<sortedIds.length; j++){
-			var jdgmtID=sortedIds[j];
-			S+=GenerateJdgmtBox(jdgmts,jdgmtID,{rule_lookup_url:rule_lookup_url, rule_name_lookup:rule_name_lookup})		
+			S+="<ul>";//Notes
+			for (var j=po.notes.length-1; j>=0; --j){
+				var note=po.notes[j];
+				S+="<li class=\"footnote\">"+note.content+"<span class=attrib> - "+note.author+" "+note.date+"</span></li>";
+			}
+			S+="</ul>";
 			
+			S+="</div>";
 		}
-		S+="</div>";//jdgmt_list
+		if(po.linksto["jdgmts"].length){
+			S+="<div class=\"jdgmt_list\"";
+			if(!show_jdgmts)S+="style=\"display:none;\"";
+			S+=">";
+			
+			var sortedIds=[];
+			for (var i=0; i<po.linksto["jdgmts"].length; i++){
+				sortedIds.push(po.linksto["jdgmts"][i]);
+			}
+			sortedIds.sort(function(a,b){
+				return jdgmts[a].label.localeCompare(jdgmts[b].label)});
+			
+			//judgements
+			for (var j=0;j<sortedIds.length; j++){
+				var jdgmtID=sortedIds[j];
+				S+=GenerateJdgmtBox(jdgmts,jdgmtID,{rule_lookup_url:rule_lookup_url, rule_name_lookup:rule_name_lookup})		
+				
+			}
+			S+="</div>";//jdgmt_list
+		}
 	
 	return S+"</section>";
 	

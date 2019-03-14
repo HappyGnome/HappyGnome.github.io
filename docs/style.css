@@ -194,9 +194,8 @@ Rulebox####################################################
 }
 .rulebox .rulefooter ul{
 	padding: 0px;
-	margin:0px;
-	list-style-type: circle;
-	
+	margin:0px;	
+	list-style-type: none;
 }
 
 /*
@@ -267,12 +266,33 @@ PObox####################################################
 	
 }
 .pobox .footer{
+	text-align: left;
+	font-size: 10pt;
 	background-color:#eeeeee;
-	border-radius: 0px 0px 0 0;
 	overflow: hidden;
-	padding:0 10px;
+	text-overflow: ellipsis;
+	padding: 5px 10px;
 }
-.pobox .jdgmt_list{}
+.pobox .footer .footnote{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-top: 5px;
+	color:#888888;
+}
+.pobox .footer .footnote .attrib{
+	font-size: 8pt;
+	font-style: italic;
+}
+.pobox .footer ul{
+	padding: 0px;
+	margin:0px;	
+	list-style-type: none;
+}
+
+.pobox .jdgmt_list{
+	border-style: dashed none none none;
+	border-width: 1px;
+}
 
 /*
 jdgmtbox####################################################
