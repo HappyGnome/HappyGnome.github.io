@@ -89,6 +89,14 @@ paths={"r":"rules", "p":"props", "o":"psoo", "d":"days", "j":"jdgmts"}
 #css classes for links to particular objects on from tables
 tables_class={"r":"a_rule", "p":"a_prop", "o":"a_po", "d":"a_day", "j":"a_jdgmt"}
 
+#CLI commands to prompt the user for when each item is added.
+#for each type this is a list of ("prompt","command text") pairs
+creation_commands={"r":[("initial proposition","lk p"), ("text", "ed t")],
+                   "p":[("day proposed","lk d"), ("author","ed auth"), ("text", "ed t")],
+                   "o":[("day raised","lk d"), ("author","ed auth"), ("text", "ed t")],
+                   "j":[("point of order","lk o"),("author","ed auth"), ("text", "ed t")],
+                   "d":[]}
+
 for k in tables:
     t=tables[k]
     path=config["sitepath"]+paths[k]+".json"
@@ -528,15 +536,24 @@ def cmdUnLink(args):
     
     
     return True
+#Add item specified by args and select
 def cmdAdd(args):
     label_data=toRulesLabel(args)
     if not label_data: return True
     
-    item=tables[label_data[0]].getDefaultCopy();
+    item=tables[label_data[0]].getDefaultCopy()
     item.label=label_data[1]
     item.date=date_of_new_items
     
     tables[label_data[0]].addItem(item)   
+    
+    cmdSel([label_data[0],label_data[1]])
+    
+    if selected_obj!=item: return True #make sure correct object selected
+    
+    for pair in creation_commands[label_data[0]]:
+        cmd=input(selection+"|"+pair[0]+">"+pair[1]+" ")
+        ParseCMD(pair[1]+" "+cmd)
     
     return True
 
