@@ -255,6 +255,18 @@ class rule_prop_table(dictable.dictable):
             count+=utils.repl(item,strings,find,replace,substr)
         return count 
     
+    '''
+    func = func(obj) should be a method that can be called on items of the type
+    stored in this table.
+    
+    Calls func for each item
+    
+    Return True on success
+    '''
+    def runPerItem(self, func):
+        for l in self.__items__:
+            func(self.__items__[l])
+        return True
     
     
     

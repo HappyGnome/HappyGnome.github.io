@@ -142,6 +142,7 @@ def editText(text):#open text editor and let user edit text, return edited versi
         text=ParseSlashEscaped(text)
         return text
     
+'''    
 def editText_paras(paras):#calls editText on text consisting of given paragraphs. 
 #Parses output to return new list of paragraphs
     text=""
@@ -161,6 +162,7 @@ def editText_paras(paras):#calls editText on text consisting of given paragraphs
     if para!="":
         ret.append(para)#catch final paragraph
     return ret
+'''
 
 #open text editor and let user edit text, return edited version
 #Without parsing slash-escaped text
@@ -288,6 +290,26 @@ def toRulesLabel(strings):
 
 def getAuthorDate():
     return {"author":config["user"], "date":str(datetime.date.today())}
+
+'''
+************************************************************
+Format conversions (not needed in releases)
+'''
+#convert the way paragraphs are stored in test fields
+def TextParaConversion(item):
+    text=getattr(item,"text",None)
+    if text==None: return
+    
+    #combine text into single string separated by <p> tags
+    new_text=""
+    for s in text:
+        new_text+="<p>\n"+s+"</p>"
+    item.text=new_text;
+    
+
+def DoFormatConvert():
+     for t in tables:
+         tables[t].runPerItem(TextParaConversion)
 '''
 ************************************************************
 Command handlers
@@ -295,6 +317,10 @@ Command handlers
 def cmdExit(args):
     return False
 def cmdSave(args):
+    #run any conversion routines when format changes. 
+    #TODO: Remove this line in releases
+    DoFormatConvert()
+    
     for t in tables:#note who saves when!
         tables[t].setAuthorDate(getAuthorDate())
         try:
@@ -398,7 +424,7 @@ def cmdEdit_text(args):
     if not selected_obj: return True
     
     if getattr(selected_obj,"text", None)!=None:
-        selected_obj.text=editText_paras(selected_obj.text)
+        selected_obj.text=editText(selected_obj.text)
     return True
     
 def cmdEdit_addnote(args):
