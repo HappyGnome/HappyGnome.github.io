@@ -16,11 +16,7 @@ function GenerateRuleBox(rules,rule_key,{id_prefix="rule", toggle_notes=true, sh
 		if(show_author) S+=" - "+rule.author+" - ";		
 		S+=rule.date+"</div></div><div class=\"rulebody\" ";
 		if(toggle_notes) S+="onclick=\"ToggleNotes('"+id_prefix+rule_key+"')\"";
-		S+=">";
-		for (var i=0; i<rule.text.length; i++)
-		{
-			S+="<p>"+rule.text[i]+"</p>";
-		}
+		S+=">"+rule.text;
 		S+="</div>";
 		if(rule.notes.length || rule.linksto["rules"].length){
 			S+="<div class=\"rulefooter\"";
