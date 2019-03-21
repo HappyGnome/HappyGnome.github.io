@@ -142,27 +142,24 @@ def editText(text):#open text editor and let user edit text, return edited versi
         text=ParseSlashEscaped(text)
         return text
     
-'''    
-def editText_paras(paras):#calls editText on text consisting of given paragraphs. 
-#Parses output to return new list of paragraphs
-    text=""
-    for p in paras:
-        text+=p+"\n"
+   
+#calls editText and adds <p> tags around paragraphs.
+def editText_paras(text):
     text=editText(text)
     
-    ret=[]
+    ret=""
     para=""
     for line in text.splitlines():
         if line.lstrip()=="":
             if para!="":
-                ret.append(para)
+                ret+="<p>"+para+"</p>"
                 para=""
         else:
             para+=line+"\n"
     if para!="":
-        ret.append(para)#catch final paragraph
+        ret+="<p>"+para+"</p>"#catch final paragraph
     return ret
-'''
+
 
 #open text editor and let user edit text, return edited version
 #Without parsing slash-escaped text
@@ -425,7 +422,7 @@ def cmdEdit_text(args):
     if not selected_obj: return True
     
     if getattr(selected_obj,"text", None)!=None:
-        selected_obj.text=editText(selected_obj.text)
+        selected_obj.text=editText_paras(selected_obj.text)
     return True
     
 def cmdEdit_addnote(args):
