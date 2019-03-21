@@ -7,11 +7,7 @@ function GenerateJdgmtBox(jdgmts,jdgmt_key, {id_prefix="jdgmnt", rule_lookup_url
 			jdgmt.label+"</h1>";
 	S+="<div class=\"subhead\">";
 	S+=" - "+jdgmt.author+" - ";		
-	S+=jdgmt.date+"</div></div><div class=\"jdgmtbody\" >";
-	for (var i=0; i<jdgmt.text.length; i++)
-	{
-		S+="<p>"+jdgmt.text[i]+"</p>";
-	}
+	S+=jdgmt.date+"</div></div><div class=\"jdgmtbody\" >"+jdgmt.text;
 	S+="</div><div class=\"footer\">";
 	
 	/*if(jdgmt.linksto["rules"].length){//C.F.		

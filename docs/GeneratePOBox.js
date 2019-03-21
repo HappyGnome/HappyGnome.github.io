@@ -10,11 +10,7 @@ function GeneratePOBox(psoo,po_key, jdgmts,{id_prefix="po", toggle_jdgmts=true, 
 		S+=" - "+po.author+" - ";		
 		S+=po.date+"</div></div><div class=\"pobody\" ";
 		if(toggle_jdgmts) S+="onclick=\"TogglePOjdgmts('"+id_prefix+po_key+"')\"";
-		S+=">";
-		for (var i=0; i<po.text.length; i++)
-		{
-			S+="<p>"+po.text[i]+"</p>";
-		}
+		S+=">"+po.text;
 		S+="</div>"
 		if(po.notes.length){
 			S+="<div class=\"footer\">";

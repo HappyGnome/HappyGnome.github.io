@@ -308,8 +308,9 @@ def TextParaConversion(item):
     
 
 def DoFormatConvert():
-     for t in tables:
-         tables[t].runPerItem(TextParaConversion)
+     #for t in tables:
+         #tables[t].runPerItem(TextParaConversion)
+    return True
 '''
 ************************************************************
 Command handlers
