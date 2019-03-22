@@ -303,8 +303,49 @@ def TextParaConversion(item):
         new_text+="<p>\n"+s+"</p>"
     item.text=new_text;
     
+def MakeDayDesc(item):
+    desc=""
+    linksto=getattr(item,"linksto",{"props":[]})
+    
+    if "props" in linksto:
+        for pNo in linksto["props"]:
+            p=props.getItemByID(pNo)
+            if p:
+                desc+=p.label+" - "+p.author          
+    
+    setattr(item,desc)
+    
 
-def DoFormatConvert():
+#convert date attribute into a week number, based on the year and 
+#iso calendar week
+def MakeDayWeek(item):
+    date_str=getattr(item,"date",None)
+    if date_str==None: return
+    
+    date=datetime.date(2019,1,1)
+    #parse date string
+    try:
+        toks=date_str.split("-")  
+        date=datetime.date(int(toks[0]),int(toks[1]),int(toks[2]))
+    except:
+        print("Invalid date string: "+date_str)
+        return 
+    
+    (year, week, day)=date.isocalendar()
+    setattr(item,'week', (year-2019)*53+week)
+    
+    
+
+def SavePreprocess():
+    '''
+    Set fields requiring pre-processing
+    '''
+    tables['d'].runPerItem(MakeDayDesc)
+    tables['d'].runPerItem(MakeDayWeek)
+    
+    '''
+    Format conversions (not needed in release)
+    '''
      #for t in tables:
          #tables[t].runPerItem(TextParaConversion)
     return True
@@ -315,9 +356,8 @@ Command handlers
 def cmdExit(args):
     return False
 def cmdSave(args):
-    #run any conversion routines when format changes. 
-    #TODO: Remove this line in releases
-    DoFormatConvert()
+    #run any conversion routines and pre-compute some fields 
+    SavePreprocess()
     
     for t in tables:#note who saves when!
         tables[t].setAuthorDate(getAuthorDate())

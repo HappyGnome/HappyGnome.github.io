@@ -62,15 +62,17 @@ class rpi_prop(rule_prop_item):
 class rpi_day(rule_prop_item):
     def __init__(self):
         super().__init__()
-         #new dictables
-        self.points={}##Todo
+        #new dictables
+        #self.points={}##Todo
+        self.week=0
+        self.desc=""#descriptor
         
         #TODO: decide how to link days!
         self.linksto={"days":[], "psoo":[], "props":[]}#props, rules etc
         
     def dictable_items(self):
         dictables=super().dictable_items()
-        dictables.extend(["points"])
+        dictables.extend(["week","desc"])
         return dictables    
 class rpi_po(rule_prop_item):
     def __init__(self):
@@ -162,6 +164,13 @@ class rule_prop_table(dictable.dictable):
     #return a dict of elements in items with matching label, indexed by their id
     def getItemsByLabel(self,label):
         return {k:self.__items__[k] for k in self.item_ids_by_label.get(label,[])}
+    
+    #return item with given index, or None, if not found
+    def getItemByID(self,index):
+        try:
+            return self.__items__[index]
+        except:
+            return None
     
     #returns id of newly added item
     def addItem(self, item):
