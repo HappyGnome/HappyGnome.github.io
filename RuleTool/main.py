@@ -12,7 +12,7 @@ import rule_prop_table as rpt
 import sys
 
 #load config or create it
-config={"user":"", "sitepath":"", "editor":"notepad.exe", "shortcuts":{}}
+config={"user":"", "sitepath":"", "editor":"notepad.exe", "shortcuts":{}, "game_start_date":"2019-02-11"}
 config_templates={}
 
 def cmdConfig(args):
@@ -20,6 +20,7 @@ def cmdConfig(args):
     config["user"]=input("Enter username: ")
     config["sitepath"]=input("Enter local path to website data: ")
     config["editor"]=input("Text editor: ")
+    config["game_start_date"]=input("Date of game start: ")
     try:
         with open("config.json","w") as config_file:
             json.dump(config,config_file)
@@ -311,9 +312,9 @@ def MakeDayDesc(item):
         for pNo in linksto["props"]:
             p=props.getItemByID(pNo)
             if p:
-                desc+=p.label+" - "+p.author          
+                desc+=p.label+" - "+p.author+". "          
     
-    setattr(item,desc)
+    setattr(item,"desc",desc)
     
 
 #convert date attribute into a week number, based on the year and 
@@ -323,6 +324,7 @@ def MakeDayWeek(item):
     if date_str==None: return
     
     date=datetime.date(2019,1,1)
+    start_date=datetime.date(2019,1,1)
     #parse date string
     try:
         toks=date_str.split("-")  
@@ -330,9 +332,16 @@ def MakeDayWeek(item):
     except:
         print("Invalid date string: "+date_str)
         return 
+    try:
+        toks=config["game_start_date"].split("-")  
+        start_date=datetime.date(int(toks[0]),int(toks[1]),int(toks[2]))
+    except:
+        print("Invalid start date: "+config["game_start_date"])
+        return 
     
     (year, week, day)=date.isocalendar()
-    setattr(item,'week', (year-2019)*53+week)
+    (start_year, start_week, start_day)=start_date.isocalendar()
+    setattr(item,'week', (year-start_year)*53+week-start_week+1)
     
     
 

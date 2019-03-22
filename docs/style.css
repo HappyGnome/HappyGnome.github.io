@@ -375,8 +375,13 @@ disputed jdgmtbox####################################################
 }
 
 /*
-disputed jdgmtbox####################################################
+days####################################################
 */
+#days_list h2{
+	font-size: 15pt;
+	font-weight: bold;
+	margin: 10px
+}
 .daybox{
 	color:#000000;
 	border: 2px solid black;
