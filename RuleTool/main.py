@@ -671,8 +671,49 @@ def cmdRepl(args):
         count=tables[l].repl(args[0],find,repl,substr)
         print("In "+l+" replaced: "+str(count))
     return True
+
+'''
+Open a text editor to allow user to re-construct the rule text from 
+amendment texts etc. Print the location of the first mismatch between
+the two texts.
+'''
+def cmdRevalidate_text(args):
+    if not selected_obj: return True
     
-    
+    if getattr(selected_obj,"text", None)!=None:
+        newText=editText_paras("")
+        while True:
+            if newText!=selected_obj.text:
+                line=0
+                line_start=0#index of character at start of last line
+                mismatch_found=False
+                for i in range(len(newText)):
+                    if newText[i]=="\n": 
+                        line+=1
+                        line_start=i+1
+                    if i>=len(selected_obj.text) or newText[i]!=selected_obj.text[i]:
+                        print("Mismatch at line "+str(line)+", column "+str(i-line_start)+":")
+                        if i>=len(selected_obj.text):
+                            print("New text does not end here!")
+                        else:
+                            print("Old: '"+selected_obj.text[i]+"', new: '"+newText[i]+"'")
+                        mismatch_found=True
+                        break
+                if not mismatch_found:#len(newText)<len(selected_obj.text):
+                    print("Mismatch at line "+str(line)+", column "+str(len(newText)-line_start)+":")
+                    print("Old text does not end here!")
+                    
+                user_choice=input("Edit Old/New/Stop? [O/N/S]: ")
+                if user_choice in ['o','O']:
+                    selected_obj.text=editText_paras(selected_obj.text)
+                elif user_choice in ['n','N']:
+                    newText=editText_paras(newText)
+                else:
+                    break
+            else:
+                print("Texts matched!")
+                break
+    return True   
 '''
 ************************************************************
 Main CLI cmd parser
@@ -683,7 +724,8 @@ handlers={"quit":cmdExit,"save":cmdSave, "sel":cmdSel,
           "ed":cmdEdit, "add":cmdAdd, "lk":cmdLink, "ulk":cmdUnLink,
           "clear_all":cmdClear, "config":cmdConfig, "rm":cmdRm,
           "date":cmdSetAddDate,
-          "repl":cmdRepl, "shortcut":cmdSetShortcut, "template":cmdSetTemplate}# "del":cmdDel, ""}#define handlers
+          "repl":cmdRepl, "shortcut":cmdSetShortcut, "template":cmdSetTemplate,
+          "rev":cmdRevalidate_text}# "del":cmdDel, ""}#define handlers
 def ParseCMD(cmd):
     toks=cmd.split()
     if len(toks)==0: return True#basic checks
