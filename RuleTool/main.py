@@ -153,12 +153,17 @@ def editText_paras(text):
     for line in text.splitlines():
         if line.lstrip()=="":
             if para!="":
-                ret+="<p>"+para+"</p>"
+                #do not add p tags if there is (partial) html around the para
+                if para[0]=="<" or para[-1]==">":
+                    ret+=para
+                else: ret+="<p>"+para+"</p>"
                 para=""
         else:
             para+=line+"\n"
     if para!="":
-        ret+="<p>"+para+"</p>"#catch final paragraph
+        if para[0]=="<" or para[-1]==">":
+            ret+=para
+        else: ret+="<p>"+para+"</p>"#catch final paragraph
     return ret
 
 
