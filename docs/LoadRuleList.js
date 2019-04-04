@@ -13,10 +13,10 @@ $(document).ready(function(){
 		for (var l=0; l<sortedIds.length;l++){
 			var i=sortedIds[l];
 			var rule=rules.items[i];			
-			if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items, i));
+			if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items, i, "rule", true, false, "", null, true, false));
 			else {
 				bRepealedRule=true;
-				$("#rules_list_repealed").append(GenerateRuleBox(rules.items,i));
+				$("#rules_list_repealed").append(GenerateRuleBox(rules.items,i, "rule", true, false, "", null, true, false));
 			}
 		}
 		if(bRepealedRule) $('#repealed_section').show();

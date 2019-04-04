@@ -15,8 +15,8 @@ $(document).ready(function(){
 			$("#title").text("Rule "+rule.label+ " Details");
 			
 			//generate rulebox#################################################
-			if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}));
-			else $("#rules_list_repealed").append(GenerateRuleBox(rules.items,ruleID,{show_notes:true,rule_lookup_url:"index.html",details:false}))
+			if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items,ruleID,"rule",true,true,"index.html",null,false,false));
+			else $("#rules_list_repealed").append(GenerateRuleBox(rules.items,ruleID,"rule",true,true,"index.html",null,false, false));
 			
 			//load propositions##############################
 			var bRepealedProps=false, bProps=false;
@@ -33,11 +33,11 @@ $(document).ready(function(){
 				var prop=props.items[sortedIds[l]];			
 				if(prop.ineffect=="1") {
 					bProps=true;
-					$("#prop_list").append(GenerateRuleBox(props.items, sortedIds[l],{id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+					$("#prop_list").append(GenerateRuleBox(props.items, sortedIds[l],"prop",true,false,"index.html",rules.items,false, true));
 				}
 				else {
 					bRepealedProps=true;
-					$("#prop_list_repealed").append(GenerateRuleBox(props.items,sortedIds[l], {id_prefix:"prop",rule_lookup_url:"index.html",rule_name_lookup:rules.items,details:false, show_author:true}));
+					$("#prop_list_repealed").append(GenerateRuleBox(props.items,sortedIds[l], "prop",true,false,"index.html",rules.items,false, true));
 				}
 			}
 			if(bProps){

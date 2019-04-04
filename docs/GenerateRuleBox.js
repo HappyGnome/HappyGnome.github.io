@@ -1,7 +1,8 @@
 function ToggleNotes(ruleID){
 			$("#"+ruleID+" .rulefooter").toggle();
 }
-function GenerateRuleBox(rules,rule_key,{id_prefix="rule", toggle_notes=true, show_notes=false, rule_lookup_url="", rule_name_lookup=null, details=true, show_author=false}={} ){
+/*default arguments: "rule", true, false, "", null, true, false*/
+function GenerateRuleBox(rules,rule_key,id_prefix/*="rule"*/, toggle_notes/*=true*/, show_notes/*=false*/, rule_lookup_url/*=""*/, rule_name_lookup/*=null*/, details/*=true*/, show_author/*=false*/){
 	var rule=rules[rule_key];
 	var S="<section class=\"rulebox\" id=\""+id_prefix+rule_key+"\">"+
 			"<div class=\"rulehead\"><h1>"+

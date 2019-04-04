@@ -1,4 +1,4 @@
-function GenerateJdgmtBox(jdgmts,jdgmt_key, {id_prefix="jdgmnt", rule_lookup_url="", rule_name_lookup=null}={} ){
+function GenerateJdgmtBox(jdgmts,jdgmt_key, id_prefix/*="jdgmnt"*/, rule_lookup_url/*=""*/, rule_name_lookup/*=null*/){
 	var jdgmt=jdgmts[jdgmt_key];
 	var S="<section class=\"jdgmtbox";
 	if (jdgmt.overruled=="1")S+=" jdgmtdisp";

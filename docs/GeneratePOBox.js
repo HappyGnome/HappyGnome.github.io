@@ -1,7 +1,7 @@
 function TogglePOjdgmts(poID){
 			$("#"+poID+" .jdgmt_list").toggle();
 }
-function GeneratePOBox(psoo,po_key, jdgmts,{id_prefix="po", toggle_jdgmts=true, show_jdgmts=false, rule_lookup_url="", rule_name_lookup=null}={} ){
+function GeneratePOBox(psoo,po_key, jdgmts,id_prefix/*="po"*/, toggle_jdgmts/*=true*/, show_jdgmts/*=false*/, rule_lookup_url/*=""*/, rule_name_lookup/*=null*/){
 	var po=psoo[po_key];
 	var S="<section class=\"pobox\" id=\""+id_prefix+po_key+"\">"+
 			"<div class=\"pohead\"><h1>"+
@@ -54,7 +54,7 @@ function GeneratePOBox(psoo,po_key, jdgmts,{id_prefix="po", toggle_jdgmts=true, 
 			//judgements
 			for (var j=0;j<sortedIds.length; j++){
 				var jdgmtID=sortedIds[j];
-				S+=GenerateJdgmtBox(jdgmts,jdgmtID,{rule_lookup_url:rule_lookup_url, rule_name_lookup:rule_name_lookup})		
+				S+=GenerateJdgmtBox(jdgmts,jdgmtID,"jdgmnt",rule_lookup_url, rule_name_lookup);		
 				
 			}
 			S+="</div>";//jdgmt_list
