@@ -1,9 +1,28 @@
+/*
+Callback to show/hide judgement section, given the id number of the PO
+*/
 function TogglePOjdgmts(poID){
 			$("#"+poID+" .jdgmt_list").toggle();
 }
+
+/*
+Generate string for section of html document displaying a point of order.
+
+args: psoo - list of PO items (from a json file)
+- po_key - index in psoo of the item to render
+- id_prefix - DOM id prefix of created section
+- toggle_jdgmts - boolean, true <=> display of associated judgements may be toggled
+- show_jdgmts - boolean, true <=> associated judgements shown by default
+- rule_lookup_url - address of page where links to rules should lead to
+- rule_name_lookup - list of rule items (where ids may be looked up)
+
+return: [str, id]. str - string of html code for the generated section
+id - DOM id of new section (once appended to the DOM)
+*/
 function GeneratePOBox(psoo,po_key, jdgmts,id_prefix/*="po"*/, toggle_jdgmts/*=true*/, show_jdgmts/*=false*/, rule_lookup_url/*=""*/, rule_name_lookup/*=null*/){
 	var po=psoo[po_key];
-	var S="<section class=\"pobox\" id=\""+id_prefix+po_key+"\">"+
+	var dom_id=id_prefix+po_key;
+	var S="<section class=\"pobox\" id=\""+dom_id+"\">"+
 			"<div class=\"pohead\"><h1>"+
 				po.label+"</h1>";
 		S+="<div class=\"subhead\">";
@@ -54,12 +73,12 @@ function GeneratePOBox(psoo,po_key, jdgmts,id_prefix/*="po"*/, toggle_jdgmts/*=t
 			//judgements
 			for (var j=0;j<sortedIds.length; j++){
 				var jdgmtID=sortedIds[j];
-				S+=GenerateJdgmtBox(jdgmts,jdgmtID,"jdgmnt",rule_lookup_url, rule_name_lookup);		
+				S+=GenerateJdgmtBox(jdgmts,jdgmtID,"jdgmt",rule_lookup_url, rule_name_lookup)[0];		
 				
 			}
 			S+="</div>";//jdgmt_list
 		}
 	
-	return S+"</section>";
+	return [S+"</section>",dom_id];
 	
 }

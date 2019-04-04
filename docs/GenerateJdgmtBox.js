@@ -1,28 +1,27 @@
-function GenerateJdgmtBox(jdgmts,jdgmt_key, id_prefix/*="jdgmnt"*/, rule_lookup_url/*=""*/, rule_name_lookup/*=null*/){
+/*
+Generate string for section of html document displaying a judgement.
+
+args: jdgmts - list of judgement items (from a json file)
+- jdgmt_key - index in jdgmts of the item to render
+- id_prefix - DOM id prefix of created section
+- rule_lookup_url - address of page where links to rules should lead to
+- rule_name_lookup - list of rule items (where ids may be looked up)
+
+return: [str, id]. str - string of html code for the generated section
+id - DOM id of new section (once appended to the DOM)
+*/
+function GenerateJdgmtBox(jdgmts,jdgmt_key, id_prefix/*="jdgmt"*/, rule_lookup_url/*=""*/, rule_name_lookup/*=null*/){
 	var jdgmt=jdgmts[jdgmt_key];
 	var S="<section class=\"jdgmtbox";
+	var dom_id=id_prefix+jdgmt_key;
 	if (jdgmt.overruled=="1")S+=" jdgmtdisp";
-		S+="\" id=\""+id_prefix+jdgmt_key+"\">"+
+	S+="\" id=\""+dom_id+"\">"+
 		"<div class=\"jdgmthead\"><h1>"+
 			jdgmt.label+"</h1>";
 	S+="<div class=\"subhead\">";
 	S+=" - "+jdgmt.author+" - ";		
 	S+=jdgmt.date+"</div></div><div class=\"jdgmtbody\" >"+jdgmt.text;
 	S+="</div><div class=\"footer\">";
-	
-	/*if(jdgmt.linksto["rules"].length){//C.F.		
-		S+="<div class=\"cf\"> <i>c.f. rules:</i>";
-		for (var j=jdgmt.linksto["rules"].length-1; j>=0; --j){
-			var ind=jdgmt.linksto["rules"][j];
-			var label=""
-			if(rule_name_lookup){//look in external rule list if given
-				label=rule_name_lookup[ind].label;						
-			}
-			else label=jdgmt[ind].label;
-			S+="<a href=\""+rule_lookup_url+"#rule"+ind+"\">"+label+"</a> "
-		}
-		S+="</div>";
-	}*/
 	
 	S+="<ul>";//Notes
 	for (var j=jdgmt.notes.length-1; j>=0; --j){
@@ -31,5 +30,5 @@ function GenerateJdgmtBox(jdgmts,jdgmt_key, id_prefix/*="jdgmnt"*/, rule_lookup_
 	}
 	S+="</ul>"
 		
-	return S+"</div></section>";
+	return [S+"</div></section>",dom_id];
 }

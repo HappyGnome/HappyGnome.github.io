@@ -15,8 +15,10 @@ $(document).ready(function(){
 			$("#title").text("Rule "+rule.label+ " Details");
 			
 			//generate rulebox#################################################
-			if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items,ruleID,"rule",true,true,"index.html",null,false,false));
-			else $("#rules_list_repealed").append(GenerateRuleBox(rules.items,ruleID,"rule",true,true,"index.html",null,false, false));
+			var new_section=GenerateRuleBox(rules.items,ruleID,"rule",true,true,"index.html",null,false,false);
+			if(rule.ineffect=="1") $("#rules_list").append(new_section[0]);
+			else $("#rules_list_repealed").append(new_section[0]);
+			ReparseMathJax(new_section[1]);//queue maths typesetting of new section, using its id
 			
 			//load propositions##############################
 			var bRepealedProps=false, bProps=false;
@@ -30,15 +32,17 @@ $(document).ready(function(){
 				return props.items[b].date.localeCompare(props.items[a].date)});
 			
 			for (var l=0; l<sortedIds.length; l++){		
-				var prop=props.items[sortedIds[l]];			
+				var prop=props.items[sortedIds[l]];	
+				new_section=GenerateRuleBox(props.items, sortedIds[l],"prop",true,false,"index.html",rules.items,false, true);			
 				if(prop.ineffect=="1") {
 					bProps=true;
-					$("#prop_list").append(GenerateRuleBox(props.items, sortedIds[l],"prop",true,false,"index.html",rules.items,false, true));
+					$("#prop_list").append(new_section[0]);
 				}
 				else {
 					bRepealedProps=true;
-					$("#prop_list_repealed").append(GenerateRuleBox(props.items,sortedIds[l], "prop",true,false,"index.html",rules.items,false, true));
+					$("#prop_list_repealed").append(new_section[0]);
 				}
+				ReparseMathJax(new_section[1]);//queue maths typesetting of new section, using its id				
 			}
 			if(bProps){
 				$('#props_section').show();

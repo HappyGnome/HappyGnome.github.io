@@ -32,8 +32,10 @@ $(document).ready(function(){
 			//load propositions##############################	
 			for (var l=0; l<sortedIds.length; l++){		
 				var prop=props.items[sortedIds[l]];			
-				if(prop.ineffect=="1") $("#prop_list").append(GenerateRuleBox(props.items, sortedIds[l],"prop",true, false,"index.html",rules.items,false, true));
-				else $("#prop_list_repealed").append(GenerateRuleBox(props.items, sortedIds[l],"prop",true, false,"index.html",rules.items,false, true));
+				var new_section=GenerateRuleBox(props.items, sortedIds[l],"prop",true, false,"index.html",rules.items,false, true)
+				if(prop.ineffect=="1") $("#prop_list").append(new_section[0]);
+				else $("#prop_list_repealed").append(new_section[0]);
+				ReparseMathJax(new_section[1]);//queue maths typesetting of new section, using its id
 			}
 				
 			var sortedIds=[];
@@ -44,7 +46,9 @@ $(document).ready(function(){
 				return psoo.items[a].label.localeCompare(psoo.items[b].label)});	
 			//Load psoo and judgements					
 			for(var r=0;r<sortedIds.length;r++){
-				$("#po_list").append(GeneratePOBox(psoo.items, sortedIds[r], jdgmts.items,"po",true, true,"index.html",rules.items));
+				var new_section=GeneratePOBox(psoo.items, sortedIds[r], jdgmts.items,"po",true, true,"index.html",rules.items);
+				$("#po_list").append(new_section[0]);
+				ReparseMathJax(new_section[1]);//queue maths typesetting of new section, using its id
 			}
 			
 			MakeUsualCrossLinks();//complete partial anchor tags from json 

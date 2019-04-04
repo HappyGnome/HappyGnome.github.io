@@ -12,16 +12,19 @@ $(document).ready(function(){
 		var bRepealedRule=false;
 		for (var l=0; l<sortedIds.length;l++){
 			var i=sortedIds[l];
-			var rule=rules.items[i];			
-			if(rule.ineffect=="1") $("#rules_list").append(GenerateRuleBox(rules.items, i, "rule", true, false, "", null, true, false));
+			var rule=rules.items[i];	
+			var new_section=GenerateRuleBox(rules.items, i, "rule", true, false, "", null, true, false);
+			if(rule.ineffect=="1") $("#rules_list").append(new_section[0]);
 			else {
 				bRepealedRule=true;
-				$("#rules_list_repealed").append(GenerateRuleBox(rules.items,i, "rule", true, false, "", null, true, false));
+				$("#rules_list_repealed").append(new_section[0]);
 			}
+			ReparseMathJax(new_section[1]);//queue maths typesetting of new section, using its id
 		}
 		if(bRepealedRule) $('#repealed_section').show();
 		
 		MakeUsualCrossLinks();//complete partial anchor tags from json 
+		
 		
 		//refresh hash:
 		var hash=location.hash;
